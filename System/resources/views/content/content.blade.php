@@ -1,4 +1,6 @@
-<main class="main">
+    @extends('main')
+    @section('content')
+    <main class="main">
             <!-- Breadcrumb -->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
@@ -201,3 +203,4 @@
             </div>
             <!-- Fin del modal Eliminar -->
         </main>
+    @endsection

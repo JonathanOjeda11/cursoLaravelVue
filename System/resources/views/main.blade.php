@@ -147,7 +147,7 @@
         </div>
 
         <!-- Contenido Principal -->
-        
+        @yield('content')
         <!-- /Fin del contenido principal -->
     </div>
 
