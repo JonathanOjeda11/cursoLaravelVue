@@ -49213,6 +49213,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -49281,7 +49286,19 @@ var render = function() {
                       domProps: { textContent: _vm._s(category.description) }
                     }),
                     _vm._v(" "),
-                    _vm._m(5, true)
+                    _c("td", [
+                      category.status
+                        ? _c("div", [
+                            _c("span", { staticClass: "badge badge-success" }, [
+                              _vm._v("Activo")
+                            ])
+                          ])
+                        : _c("div", [
+                            _c("span", { staticClass: "badge badge-danger" }, [
+                              _vm._v("Inactivo")
+                            ])
+                          ])
+                    ])
                   ])
                 }),
                 0
@@ -49289,14 +49306,14 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(6)
+          _vm._m(5)
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(7),
+    _vm._m(6),
     _vm._v(" "),
-    _vm._m(8)
+    _vm._m(7)
   ])
 }
 var staticRenderFns = [
@@ -49425,14 +49442,6 @@ var staticRenderFns = [
         },
         [_c("i", { staticClass: "icon-trash" })]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "badge badge-success" }, [_vm._v("Activo")])
     ])
   },
   function() {
