@@ -50,7 +50,12 @@
                                     <td v-text="category.name"></td>
                                     <td v-text="category.description"></td>
                                     <td>
-                                        <span class="badge badge-success">Activo</span>
+                                        <div v-if="category.status">
+                                            <span class="badge badge-success">Activo</span>
+                                        </div>
+                                        <div v-else>
+                                            <span class="badge badge-danger">Inactivo</span>
+                                        </div>
                                     </td>
                                 </tr>
                                
