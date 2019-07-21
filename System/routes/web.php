@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return view('content.content');
+    return view('content/content');
 });
