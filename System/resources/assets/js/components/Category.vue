@@ -102,22 +102,32 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="nombre" name="nombre" class="form-control" placeholder="Nombre de categoría">
+                                        <input type="text" v-model="name" name="nombre" class="form-control" placeholder="Nombre de categoría">
                                         <span class="help-block">(*) Ingrese el nombre de la categoría</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="descripcion" name="descripcion" class="form-control" placeholder="Enter Email">
+                                        <input type="text" v-model="description" name="descripcion" class="form-control" placeholder="Ingrese descripcion">
                                     </div>
+                                </div>
+                                 <div v-show="errorCategory" class="form-group row div-error">
+                                    <div class="text-center text-error">
+                                        <div v-for="error in errorShowMsjCategory" :key="error" v-text="error">
+
+                                        </div>
+
+                                    </div>
+                             
+
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary">Actualizar</button>
+                            <button type="button" v-if="typeAction==1" class="btn btn-primary" @click="registerCategory()" >Guardar</button>
+                            <button type="button" v-if="typeAction==2" class="btn btn-primary" @click="updateCategory()">Actualizar</button>
 
                         </div>
                     </div>
@@ -157,13 +167,15 @@
          data()
             {
                 return {
-                   
+                    category_id:0,
                     name:'',
                     description:'',
                     arrayCategory:[],
                     modal:0,
                     titleModal:'',
-                    tipoAccion:0
+                    typeAction:0,
+                    errorCategory:0,
+                    errorShowMsjCategory:[],
                    
                 }
             },
@@ -184,8 +196,61 @@
             },
             registerCategory()
             {
+                if(this.validateCategory())
+                    {
+                        return;
+                    }
+                let me = this;
+                 axios.post('/categoria/registrar',{
+                     'name':this.name,
+                     'description':this.description
+
+                 }).then(function (response) {
+                      me.closeModal();
+                      me.listCategory();
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });  
+
             
             },
+            updateCategory()
+                {
+                    if(this.validateCategory())
+                        {
+                        return;
+                        }
+                        let me=this;
+                        axios.put('/categoria/actualizar',{
+                            'name':this.name,
+                            'description':this.description,
+                            'id':this.category_id
+                            }).then(function (response) {
+                            me.closeModal();
+                            me.listCategory();
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            // always executed
+                            });  
+                    
+                },
+            validateCategory()
+                {
+                    this.errorCategory=0;
+                    this.errorShowMsjCategory=[];
+                    if(!this.name) this.errorShowMsjCategory.push("El nombre de la categoria no puede estar vacio");
+                    if(this.errorShowMsjCategory.length) this.errorCategory=1;
+                    return this.errorCategory;
+
+                },
             openModal(model, action, data=[])
             {
                 switch(model)
@@ -200,7 +265,7 @@
                                     this.name='';
                                     this.titleModal='Registrar Categoria';
                                     this.description='';
-                                    this.tipoAccion=1;
+                                    this.typeAction=1;
                                     break;
 
 
@@ -208,10 +273,11 @@
                             case 'update':
                                 {
                                     this.modal=1;
-                                    this.name='';
                                     this.titleModal='Actualizar Categoria';
-                                    this.description='';
-                                    this.tipoAccion=2;
+                                    this.category_id=data['id'];
+                                    this.name=data['name'];
+                                    this.description=data['description'];
+                                    this.typeAction=2;
                                     break;
 
                                 }
