@@ -49615,6 +49615,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -49741,6 +49742,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         switch (action) {
                             case 'register':
                                 {
+                                    this.errorCategory = 0;
                                     this.modal = 1;
                                     this.name = '';
                                     this.titleModal = 'Registrar Categoria';
@@ -49750,6 +49752,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 }
                             case 'update':
                                 {
+                                    this.errorCategory = 0;
                                     this.modal = 1;
                                     this.titleModal = 'Actualizar Categoria';
                                     this.category_id = data['id'];
