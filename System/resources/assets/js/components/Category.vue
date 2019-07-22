@@ -120,6 +120,7 @@
                              
 
                                 </div>
+
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -318,6 +319,7 @@
                         {
                             case 'register':
                                 {
+                                    this.errorCategory=0;
                                     this.modal=1;
                                     this.name='';
                                     this.titleModal='Registrar Categoria';
@@ -329,6 +331,7 @@
                                 }
                             case 'update':
                                 {
+                                    this.errorCategory=0;
                                     this.modal=1;
                                     this.titleModal='Actualizar Categoria';
                                     this.category_id=data['id'];
