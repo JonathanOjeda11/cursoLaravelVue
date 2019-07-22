@@ -43,9 +43,16 @@
                                         <button type="button" class="btn btn-warning btn-sm"  @click="openModal('category','update',category)">
                                           <i class="icon-pencil"></i>
                                         </button> &nbsp;
-                                        <button type="button" class="btn btn-danger btn-sm">
-                                          <i class="icon-trash"></i>
-                                        </button>
+                                        <template v-if="category.status">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="disableCategory(category.id)">
+                                                <i class="icon-trash"></i>                                         
+                                            </button>
+                                        </template>
+                                         <template v-else>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="enableCategory(category.id)">
+                                                <i class="icon-check"></i>                                         
+                                            </button>
+                                        </template>
                                     </td>
                                     <td v-text="category.name"></td>
                                     <td v-text="category.description"></td>
@@ -103,7 +110,7 @@
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                     <div class="col-md-9">
                                         <input type="text" v-model="name" name="nombre" class="form-control" placeholder="Nombre de categoría">
-                                        <span class="help-block">(*) Ingrese el nombre de la categoría</span>
+                                        <span class="help-block"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -296,14 +303,121 @@
                 this.titleModal='';
                                    
 
-            }
+            },
             
             
-        },
+        
+        disableCategory(id)
+                {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false,
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+                        let me=this;
+                        axios.put('/categoria/desactivar',{
+                            'id':id
+                            }).then(function (response) {
+                                swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                                )
+                            me.listCategory();
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            // always executed
+                            });  
+                    
+
+                    
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                        )
+                    }
+                    })
+                },
+
+                enableCategory(id)
+                {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false,
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, activate it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+                        let me=this;
+                        axios.put('/categoria/activar',{
+                            'id':id
+                            }).then(function (response) {
+                                swalWithBootstrapButtons.fire(
+                                'Added!',
+                                'Your file has been added.',
+                                'success'
+                                )
+                            me.listCategory();
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            // always executed
+                            });  
+                    
+
+                    
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                        )
+                    }
+                    })
+                }},
+
         mounted() {
             this.listCategory();
         }
-    }
+    
+        }
 </script>
 <style>
 .mostrar
