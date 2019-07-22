@@ -287,7 +287,7 @@
                 axios.get(url).then(function (response) {
                     //console.log(response);
                     var answer= response.data;
-                    me.arrayCategoria = answer.categories;
+                    me.arrayCategory = answer.categories;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -301,7 +301,12 @@
                         }
                     let me = this;
                     axios.post('/articulos/registrar',{
-                        
+                        'categoryid': this.categoryid,
+                        'code': this.code,
+                        'name': this.name,
+                        'stock': this.stock,
+                        'sale_price': this.sale_price,
+                        'description':this.description
 
                     }).then(function (response) {
                         me.closeModal();
@@ -353,7 +358,10 @@
                 {
                         this.errorArticle=0;
                         this.errorShowMsjArticle=[];
+                        if(this.categoryid==0) this.errorShowMsjArticle.push("Seleccione una categoria");
                         if(!this.name) this.errorShowMsjArticle.push("El nombre del articulo no puede estar vacio");
+                        if(!this.stock) this.errorShowMsjArticle.push("El stock del articulo debe de ser un numero y no puede estar vacio");
+                        if(!this.sale_price) this.errorShowMsjArticle.push("El precio del articulo debe de ser un numero");
                         if(this.errorShowMsjArticle.length) this.errorArticle=1;
                         return this.errorArticle;
 
@@ -374,6 +382,14 @@
                                         this.titleModal='Registrar Articulo';
                                         this.description='';
                                         this.typeAction=1;
+                                        this.categoryid=0;
+                                        this.categoryName='';
+                                        this.code='';
+                                        this.sale_price=0;
+                                        this.stock=0;
+                                        
+                                        
+
                                         break;
 
 
@@ -383,8 +399,12 @@
                                         this.errorArticle=0;
                                         this.modal=1;
                                         this.titleModal='Actualizar Articulo';
-                                        this.category_id=data['id'];
+                                        this.article_id=data['id'];
+                                        this.categoryid=data['categoryid'];
+                                        this.code=data['code'];
                                         this.name=data['name'];
+                                        this.stock=data['stock'];
+                                        this.sale_price=data['sale_price'];
                                         this.description=data['description'];
                                         this.typeAction=2;
                                         break;
@@ -395,6 +415,7 @@
 
                         }
                     }
+                    this.selectCategory();
 
                 },
                 closeModal()
@@ -403,6 +424,14 @@
                     this.name='';
                     this.description='';
                     this.titleModal='';
+                    this.categoryid=0;
+                    this.categoryName='';
+                    this.code='';
+                    this.name='';
+                    this.sale_price=0;
+                    this.stock=0;
+                    this.errorArticle=0;
+
                                     
 
                 },
