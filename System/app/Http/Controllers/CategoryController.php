@@ -34,14 +34,14 @@ class CategoryController extends Controller
         $category->save();
     }
 
-    public function desactivar(Request $request)
+    public function desactivate(Request $request)
     {
         $category = Category::findOrFail($request->id);
         $category->status='0';
         $category->save();
     }
 
-    public function activar(Request $request)
+    public function activate(Request $request)
     {  
         $category = Category::findOrFail($request->id);
         $category->status='1';
