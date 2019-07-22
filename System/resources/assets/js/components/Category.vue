@@ -23,8 +23,8 @@
                                       <option value="nombre">Nombre</option>
                                       <option value="descripcion">Descripción</option>
                                     </select>
-                                    <input type="text" id="texto" name="texto" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" v-model="search" @keyup.enter="listCategory(1,search,criteria)" name="texto" class="form-control" placeholder="Texto a buscar">
+                                    <button type="submit" @click="listCategory(1,search,criteria)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -70,23 +70,14 @@
                         </table>
                         <nav>
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Ant</a>
+                                <li class="page-item" v-if="pagination.current_page>1">
+                                    <a class="page-link" href="#" @click.prevent="changePage(pagination.current_page-1,search,criteria)">Ant</a>
                                 </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
+                                <li class="page-item active" v-for="page in pagesNumber" :key="page" :class="[page==isActived ?  'active': '']">
+                                    <a class="page-link" href="#" @click.prevent="changePage(page,search,criteria)" v-text="page"></a>
                                 </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">3</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">4</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Sig</a>
+                                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                    <a class="page-link" href="#" @click.prevent="changePage(pagination.current_page+1,search,criteria)">Sig</a>
                                 </li>
                             </ul>
                         </nav>
@@ -183,16 +174,65 @@
                     typeAction:0,
                     errorCategory:0,
                     errorShowMsjCategory:[],
+                    pagination: {
+                        'total':0,
+                        'current_page':0, 
+                        'per_page':0,
+                        'last_page':0,
+                        'from' :0,
+                        'to':0,
+                    },
+                    offset:3,
+                    criteria: 'name',
+                    search: ''
                    
                 }
             },
-        methods: {
-            listCategory()
+            computed:
             {
-                let me = this;
-               //var url = '/categoria?page='+page+'&buscar='+buscar+'&criterio='+criterio;
-                    axios.get('/categoria').then(function (response) {
-                      me.arrayCategory = response.data;
+                isActived: function()
+                {
+                    return this.pagination.current_page;
+                },
+                pagesNumber:  function()
+                {
+                    if(!this.pagination.to)
+                    {
+                        return [];
+                    }
+                    var from = this.pagination.current_page - this.offset;
+                    if(from < 1)
+                    {
+                        from = 1;
+                    }
+
+                    var to = from+(this.offset*2);
+                    if(to>=this.pagination.last_page)
+                    {
+                        to = this.pagination.last_page;
+                    }
+                    var pagesArray=[];
+                    while(from<=to)
+                    {
+                    pagesArray.push(from);
+                    from++;
+                    }
+                    return pagesArray;
+
+
+                }
+            },
+        methods: {
+            listCategory(page, search, criteria)
+            {
+               let me = this;
+                    var url = '/categoria?page='+page+'&search='+search+'&criteria='+criteria;
+                    axios.get(url).then(function (response) {
+                        var answer = response.data;
+                        me.arrayCategory=answer.categories.data
+                        me.pagination=answer.pagination;
+                        
+
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -200,6 +240,7 @@
                     .then(function () {
                         // always executed
                     });  
+
             },
             registerCategory()
             {
@@ -214,7 +255,7 @@
 
                  }).then(function (response) {
                       me.closeModal();
-                      me.listCategory();
+                      me.listCategory('1','','name');
 
                     })
                     .catch(function (error) {
@@ -226,6 +267,15 @@
 
             
             },
+            changePage(page, search, criteria)
+                {
+                    let me = this;
+                    //Actualiza la pagina actual
+                    me.pagination.current_page=page;
+                    //Envia la peticion para mandar la pagina
+                    me.listCategory(page, search, criteria);
+
+                },
             updateCategory()
                 {
                     if(this.validateCategory())
@@ -239,7 +289,7 @@
                             'id':this.category_id
                             }).then(function (response) {
                             me.closeModal();
-                            me.listCategory();
+                            me.listCategory('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -336,7 +386,7 @@
                                 'Your file has been deleted.',
                                 'success'
                                 )
-                            me.listCategory();
+                            me.listCategory('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -389,7 +439,7 @@
                                 'Your file has been added.',
                                 'success'
                                 )
-                            me.listCategory();
+                            me.listCategory('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -414,35 +464,35 @@
                 }},
 
         mounted() {
-            this.listCategory();
+            this.listCategory(1, this.search, this.criteria);
         }
     
         }
-</script>
-<style>
-.mostrar
-{
-    display: list-item !important;
-    opacity: 1 !important;
-    position: absolute !important;
-    background-color: #3c29297a !important;
-}
-.modal-content
-{
-    width: 100% !important;
-    position: absolute;
-}
-.div-error
-{
-    display: flex;
-    justify-content: center;
+        </script>
+        <style>
+        .mostrar
+        {
+            display: list-item !important;
+            opacity: 1 !important;
+            position: absolute !important;
+            background-color: #3c29297a !important;
+        }
+        .modal-content
+        {
+            width: 100% !important;
+            position: absolute;
+        }
+        .div-error
+        {
+            display: flex;
+            justify-content: center;
 
-}
-.text-error
-{
-    color: red !important;
-    font-weight: bold;
-}
+        }
+        .text-error
+        {
+            color: red !important;
+            font-weight: bold;
+        }
 
 
-</style>
+        </style>
