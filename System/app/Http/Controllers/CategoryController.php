@@ -38,6 +38,15 @@ class CategoryController extends Controller
 
     }
 
+    public function selectCategory(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $categories = Category::where('status','=','1')
+        ->select('id','name')->orderBy('name', 'asc')->get();
+        return ['categories'=>$categories];
+
+    }
+
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

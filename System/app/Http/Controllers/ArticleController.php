@@ -18,14 +18,14 @@ class ArticleController extends Controller
             $articles=Article::join('categories','articles.categoryid','=','categories.id')
             ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name',
             'articles.sale_price','articles.stock','articles.description', 'articles.status')
-            ->orderBy('articles.id','desc')->paginate(3);
+            ->orderBy('articles.id','desc')->paginate(10);
         }else
         {
             $articles=Article::join('categories','articles.categoryid','=','categories.id')
             ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name',
             'articles.sale_price','articles.stock','articles.description', 'articles.status')
             ->where('articles.'.$criteria, 'like', '%'. $search . '%')
-            ->orderBy('articles.id','desc')->paginate(3);
+            ->orderBy('articles.id','desc')->paginate(10);
         }
 
         return [
