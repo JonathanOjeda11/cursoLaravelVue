@@ -51977,6 +51977,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.errorShowMsjArticle = [];
             if (this.categoryid == 0) this.errorShowMsjArticle.push("Seleccione una categoria");
             if (!this.name) this.errorShowMsjArticle.push("El nombre del articulo no puede estar vacio");
+            if (!this.code) this.errorShowMsjArticle.push("El codigo del articulo no puede estar vacio");
             if (!this.stock) this.errorShowMsjArticle.push("El stock del articulo debe de ser un numero y no puede estar vacio");
             if (!this.sale_price) this.errorShowMsjArticle.push("El precio del articulo debe de ser un numero");
             if (this.errorShowMsjArticle.length) this.errorArticle = 1;
