@@ -111,13 +111,17 @@
                                         <select class="form-control" v-model="categoryid">
                                             <option value="0" disabled>Seleccione</option>
                                             <option v-for="category in arrayCategory" :key="category.id" :value="category.id" v-text="category.name"></option>
+                                             
                                         </select>                                        
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Código</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="code" class="form-control" placeholder="Código de barras">                                        
+                                        <input type="text" v-model="code" class="form-control" placeholder="Código de barras">  
+                                        <barcode :value="code" :options="{ format: 'EAN-13' }">
+                                                Generando codigo de barras
+                                            </barcode>                                        
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -193,6 +197,8 @@
 </template>
 
 <script>
+    import VueBarcode from 'vue-barcode';
+
     export default {
          data()
             {
@@ -226,6 +232,9 @@
                     arrayCategory:[]
                    
                 }
+            },
+            components: {
+                'barcode': VueBarcode
             },
             computed:
             {
