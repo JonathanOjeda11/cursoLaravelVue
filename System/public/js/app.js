@@ -50871,7 +50871,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
             var me = this;
-            axios.post('/articulos/registrar', {
+            axios.post('/articulo/registrar', {
                 'categoryid': this.categoryid,
                 'code': this.code,
                 'name': this.name,
@@ -51641,7 +51641,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           attrs: {
-                            type: "email",
+                            type: "text",
                             placeholder: "Ingrese descripción"
                           },
                           domProps: { value: _vm.description },

@@ -141,7 +141,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
                                     <div class="col-md-9">
-                                        <input type="email" v-model="description" class="form-control" placeholder="Ingrese descripción">
+                                        <input type="text" v-model="description" class="form-control" placeholder="Ingrese descripción">
                                     </div>
                                 </div>
                                 <div v-show="errorArticle" class="form-group row div-error">
@@ -300,7 +300,7 @@
                             return;
                         }
                     let me = this;
-                    axios.post('/articulos/registrar',{
+                    axios.post('/articulo/registrar',{
                         'categoryid': this.categoryid,
                         'code': this.code,
                         'name': this.name,
