@@ -51012,7 +51012,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         'id': id
                     }).then(function (response) {
                         swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success');
-                        me.listArticulo('1', '', 'name');
+                        me.listArticle('1', '', 'name');
                     }).catch(function (error) {
                         console.log(error);
                     }).then(function () {
@@ -51047,7 +51047,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 if (result.value) {
                     var me = _this2;
-                    axios.put('/article/activar', {
+                    axios.put('/articulo/activar', {
                         'id': id
                     }).then(function (response) {
                         swalWithBootstrapButtons.fire('Added!', 'Your file has been added.', 'success');

@@ -472,7 +472,7 @@
                                 'Your file has been deleted.',
                                 'success'
                                 )
-                            me.listArticulo('1','','name');
+                            me.listArticle('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -517,7 +517,7 @@
                     }).then((result) => {
                     if (result.value) {
                         let me=this;
-                        axios.put('/article/activar',{
+                        axios.put('/articulo/activar',{
                             'id':id
                             }).then(function (response) {
                                 swalWithBootstrapButtons.fire(
