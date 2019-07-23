@@ -11,7 +11,8 @@ class CategoryController extends Controller
  
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
+        
         $search=$request->search;
         $criteria=$request->criteria;
 
@@ -35,6 +36,15 @@ class CategoryController extends Controller
             'categories' => $categories
         ];
 
+
+    }
+
+    public function selectCategory(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $categories = Category::where('status','=','1')
+        ->select('id','name')->orderBy('name', 'asc')->get();
+        return ['categories'=>$categories];
 
     }
 
