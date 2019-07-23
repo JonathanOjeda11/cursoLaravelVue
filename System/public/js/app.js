@@ -50901,9 +50901,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var me = this;
             axios.put('/articulo/actualizar', {
+
+                'categoryid': this.categoryid,
+                'code': this.code,
                 'name': this.name,
+                'stock': this.stock,
+                'sale_price': this.sale_price,
                 'description': this.description,
-                'id': this.category_id
+                'id': this.article_id
+
             }).then(function (response) {
                 me.closeModal();
                 me.listArticle('1', '', 'name');
@@ -51238,7 +51244,7 @@ var render = function() {
                     _c("td", {
                       domProps: { textContent: _vm._s(article.sale_price) }
                     }),
-                    _vm._v("}\n                            "),
+                    _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(article.stock) }
                     }),

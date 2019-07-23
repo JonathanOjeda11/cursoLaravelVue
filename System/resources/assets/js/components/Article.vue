@@ -61,7 +61,7 @@
                                     <td v-text="article.code"></td>
                                     <td v-text="article.name"></td>
                                     <td v-text="article.category_name"></td>
-                                    <td v-text="article.sale_price"></td>}
+                                    <td v-text="article.sale_price"></td>
                                     <td v-text="article.stock"></td>
                                     <td v-text="article.description"></td>
                                     <td>
@@ -339,9 +339,16 @@
                             }
                             let me=this;
                             axios.put('/articulo/actualizar',{
-                                'name':this.name,
-                                'description':this.description,
-                                'id':this.category_id
+                                
+                                'categoryid': this.categoryid,
+                                'code': this.code,
+                                'name': this.name,
+                                'stock': this.stock,
+                                'sale_price':this.sale_price,
+                                'description': this.description,
+                                'id':this.article_id
+
+
                                 }).then(function (response) {
                                 me.closeModal();
                                 me.listArticle('1','','name');
