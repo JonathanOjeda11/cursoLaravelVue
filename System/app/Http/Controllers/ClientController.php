@@ -41,24 +41,31 @@ class ClientController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
         $person = new Person();
-        $person->name = $request->name;
-        $person->document_type = $request->document_type;
-        $person->document_num = $request->document_num;
-        $person->address = $request->address;
-        $person->phone= $request->phone;
+        $person->fill([
+            'name' => $request->name,
+            'document_type' => $request->document_type,
+            'document_num' => $request->document_num,
+            'address' => $request->address,
+            'phone'=> $request->phone,
+            'mail'=>$request->mail
+        ]);
+
         $person->save();
+
     }
 
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
         $person = Person::findOrFail($request->id);
-        $person->name = $request->name;
-        $person->document_type = $request->document_type;
-        $person->document_num = $request->document_num;
-        $person->address = $request->address;
-        $person->phone= $request->phone;
-        $person->mail=$request->mail;
+        $person->fill([
+            'name' => $request->name,
+            'document_type' => $request->document_type,
+            'document_num' => $request->document_num,
+            'address' => $request->address,
+            'phone'=> $request->phone,
+            'mail'=>$request->mail
+        ]);
         $person->save();
     }
 
