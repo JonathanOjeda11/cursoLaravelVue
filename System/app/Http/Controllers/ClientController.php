@@ -9,7 +9,7 @@ class ClientController extends Controller
 {
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         
         $search=$request->search;
         $criteria=$request->criteria;
