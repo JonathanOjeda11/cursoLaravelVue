@@ -58,6 +58,7 @@ class ClientController extends Controller
         $person->document_num = $request->document_num;
         $person->address = $request->address;
         $person->phone= $request->phone;
+        $person->mail=$request->mail;
         $person->save();
     }
 

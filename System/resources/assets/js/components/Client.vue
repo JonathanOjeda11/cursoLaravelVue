@@ -10,8 +10,8 @@
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Categorías
-                        <button type="button" class="btn btn-secondary" @click="openModal('person','register')">
+                        <i class="fa fa-align-justify"></i> Cliente
+                        <button type="button" class="btn btn-secondary" @click="openModal('Person','register')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -93,16 +93,54 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="name" name="nombre" class="form-control" placeholder="Nombre de categoría">
+                                        <input type="text" v-model="name" class="form-control" placeholder="Nombre de la persona">
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
+                                    <label class="col-md-3 form-control-label" for="email-input">Tipo Documento</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="description" name="descripcion" class="form-control" placeholder="Ingrese descripcion">
+                                       <select v-model="document_type">
+                                           <option value="DNI">DNI</option>
+                                           <option value="RUC">RUC</option>
+                                           <option value="PASS">PASS</option>
+                                       </select>
+
+
                                     </div>
-                                </div>
+                                    </div>
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Numero de documento</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="document_num" class="form-control" placeholder="Numero de documento">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                     <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Direccion</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="address" class="form-control" placeholder="Direccion">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                     <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Telefono</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="phone" class="form-control" placeholder="Telefono">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" v-model="mail" class="form-control" placeholder="Email">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+                                
                                  <div v-show="errorPerson" class="form-group row div-error">
                                     <div class="text-center text-error">
                                         <div v-for="error in errorShowMsjPerson" :key="error" v-text="error">
@@ -250,7 +288,12 @@
                 let me = this;
                  axios.post('/cliente/registrar',{
                      'name':this.name,
-                     'description':this.description
+                     'document_type':this.document_type,
+                     'document_num':this.document_num,
+                     'address':this.address,
+                     'phone':this.phone,
+                     'mail':this.mail
+
 
                  }).then(function (response) {
                       me.closeModal();
@@ -282,10 +325,14 @@
                         return;
                         }
                         let me=this;
-                        axios.put('/categoria/actualizar',{
-                            'name':this.name,
-                            'description':this.description,
-                            'id':this.Person_id
+                        axios.put('/cliente/actualizar',{
+                                'name':this.name,
+                                'document_type':this.document_type,
+                                'document_num':this.document_num,
+                                'address':this.address,
+                                'phone':this.phone,
+                                'mail':this.mail,
+                                'id':this.Person_id
                             }).then(function (response) {
                             me.closeModal();
                             me.listPerson('1','','name');
@@ -302,7 +349,7 @@
                 {
                     this.errorPerson=0;
                     this.errorShowMsjPerson=[];
-                    if(!this.name) this.errorShowMsjPerson.push("El nombre de la categoria no puede estar vacio");
+                    if(!this.name) this.errorShowMsjPerson.push("El nombre de la persona no puede estar vacio");
                     if(this.errorShowMsjPerson.length) this.errorPerson=1;
                     return this.errorPerson;
 
@@ -320,9 +367,14 @@
                                     this.errorPerson=0;
                                     this.modal=1;
                                     this.name='';
-                                    this.titleModal='Registrar Categoria';
+                                    this.titleModal='Registrar Cliente';
                                     this.description='';
                                     this.typeAction=1;
+                                    this.document_type='DNI';
+                                    this.document_num='';
+                                    this.address='';
+                                    this.phone='';
+                                    this.mail='';
                                     break;
 
 
@@ -331,11 +383,15 @@
                                 {
                                     this.errorPerson=0;
                                     this.modal=1;
-                                    this.titleModal='Actualizar Categoria';
+                                    this.titleModal='Actualizar Cliente';
                                     this.Person_id=data['id'];
                                     this.name=data['name'];
-                                    this.description=data['description'];
+                                    this.document_type=data['document_type'];
+                                    this.address=data['address'];
+                                    this.phone=data['phone'];
                                     this.typeAction=2;
+                                    this.mail=data['mail'];
+
                                     break;
 
                                 }
@@ -350,8 +406,13 @@
             {
                 this.modal=0;
                 this.name='';
-                this.description='';
+                this.document_type='DNI';
+                this.document_num='';
+                this.address='';
                 this.titleModal='';
+                this.phone='';
+                this.mail='';
+                this.errorPerson=0;
                                    
 
             },
