@@ -11,6 +11,6 @@ class Person extends Model
 
     public function supplier()
     {
-        return $this->hasOne('App\Proveedor');
+        return $this->hasOne('App\Supplier');
     }
 }

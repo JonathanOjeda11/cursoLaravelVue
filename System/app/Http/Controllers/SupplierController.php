@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Suppliers;
+use App\Supplier;
 use App\Person;
 
 class SupplierController extends Controller
@@ -18,13 +18,13 @@ class SupplierController extends Controller
 
         if($search=='')
         {
-            $Supplier=Suppliers::join('people','suppliers.id','=','people.id')
+            $supplier=Supplier::join('people','suppliers.id','=','people.id')
             ->select('people.id','people.name','people.document_type','people.document_num','people.address','people.phone',
             'people.mail','suppliers.contact','suppliers.contact_phone')
             ->orderBy('people.id','desc')->paginate(3);
         }else
         {
-            $Supplier=Supplier::join('people','suppliers.id','=','people.id')
+            $supplier=Supplier::join('people','suppliers.id','=','people.id')
             ->select('people.id','people.name','people.document_type','people.document_num','people.address','people.phone',
             'people.mail','suppliers.contact','suppliers.contact_phone')
             ->orderBy('people.id','desc')->where($criteria, 'like', '%'. $search . '%')->paginate(3);
@@ -32,14 +32,14 @@ class SupplierController extends Controller
 
         return [
             'pagination' => [
-                'total' => $Supplier->total(),
-                'current_page' => $Supplier->currentPage(),
-                'per_page' => $Supplier->perPage(),
-                'last_page' => $Supplier->lastPage(),
-                'from' => $Supplier->firstItem(),
-                'to' => $Supplier->lastItem()
+                'total' => $supplier->total(),
+                'current_page' => $supplier->currentPage(),
+                'per_page' => $supplier->perPage(),
+                'last_page' => $supplier->lastPage(),
+                'from' => $supplier->firstItem(),
+                'to' => $supplier->lastItem()
             ],
-            'Supplier' => $Supplier
+            'supplier' => $supplier
         ];
 
 
@@ -54,7 +54,7 @@ class SupplierController extends Controller
             $person = new Person();
             $person->fill($request->all());
             $person->save();
-            $supplier = new Suppliers();
+            $supplier = new Supplier();
             $supplier->fill($request->all());
             $supplier->save();
 
@@ -77,8 +77,8 @@ class SupplierController extends Controller
         {
             
             DB::beginTransaction();
-            $supplier = new Suppliers();
-            $supplier = Suppliers::findOrFail($request->id);
+            $supplier = new Supplier();
+            $supplier = Supplier::findOrFail($request->id);
             $supplier -> fill($request->all());
             $supplier->save();
             $person = new Person();

@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Suppliers extends Model
+class Supplier extends Model
 {
+    protected $table = 'suppliers';
     protected $fillable = ['id','contact','contact_phone'];
 
     public $timestamps = false;

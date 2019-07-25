@@ -57255,7 +57255,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/proveedor?page=' + page + '&search=' + search + '&criteria=' + criteria;
             axios.get(url).then(function (response) {
                 var answer = response.data;
-                me.arrayPerson = answer.Supplier.data;
+                me.arrayPerson = answer.supplier.data;
                 me.pagination = answer.pagination;
                 console.log(me.arrayPerson);
             }).catch(function (error) {
