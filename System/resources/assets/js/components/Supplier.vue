@@ -10,7 +10,7 @@
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Cliente
+                        <i class="fa fa-align-justify"></i> Proveedor
                         <button type="button" class="btn btn-secondary" @click="openModal('Person','register')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
@@ -41,6 +41,7 @@
                                     <th>Direccion</th>
                                     <th>Telefono</th>
                                     <th>Email</th>
+                                    <th>Contacto</th>
                                    
                                 </tr>
                             </thead>
@@ -57,6 +58,7 @@
                                     <td v-text="Person.address"></td>
                                     <td v-text="Person.phone"></td>
                                     <td v-text="Person.mail"></td>
+                                    <td v-text="Person.contact"></td>
                                 </tr>
                                
                             </tbody>
@@ -133,10 +135,28 @@
                                     </div>
                                     </div>
 
+                
+
                                     <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Email</label>
                                     <div class="col-md-9">
                                         <input type="email" v-model="mail" class="form-control" placeholder="Email">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Contacto</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="contact" class="form-control" placeholder="Nombre del Contacto">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Numero de contacto</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="contactPhone" class="form-control" placeholder="Ingrese el numero del contacto">
                                         <span class="help-block"></span>
                                     </div>
                                     </div>
@@ -210,6 +230,8 @@
                     titleModal:'',
                     typeAction:0,
                     errorPerson:0,
+                    contact:'',
+                    contactPhone:'',
                     errorShowMsjPerson:[],
                     pagination: {
                         'total':0,
@@ -263,10 +285,10 @@
             listPerson(page, search, criteria)
             {
                let me = this;
-                    var url = '/cliente?page='+page+'&search='+search+'&criteria='+criteria;
+                    var url = '/proveedor?page='+page+'&search='+search+'&criteria='+criteria;
                     axios.get(url).then(function (response) {
                         var answer = response.data;
-                        me.arrayPerson=answer.persons.data
+                        me.arrayPerson=answer.supplier.data
                         me.pagination=answer.pagination;
                         
 
@@ -286,13 +308,16 @@
                         return;
                     }
                 let me = this;
-                 axios.post('/cliente/registrar',{
-                     'name':this.name,
+                 axios.post('/proveedor/registrar',{
+                    'name':this.name,
                      'document_type':this.document_type,
                      'document_num':this.document_num,
                      'address':this.address,
                      'phone':this.phone,
-                     'mail':this.mail
+                     'mail':this.mail,
+                     'contact':this.contact,
+                     'contact_phone':this.contactPhone,
+                     'id':this.person_id
 
 
                  }).then(function (response) {
@@ -325,14 +350,16 @@
                         return;
                         }
                         let me=this;
-                        axios.put('/cliente/actualizar',{
+                        axios.put('/proveedor/actualizar',{
                                 'name':this.name,
                                 'document_type':this.document_type,
                                 'document_num':this.document_num,
                                 'address':this.address,
                                 'phone':this.phone,
                                 'mail':this.mail,
-                                'id':this.Person_id
+                                'id':this.Person_id,
+                                'contact':this.contact,
+                                'contact_phone':this.contactPhone
                             }).then(function (response) {
                             me.closeModal();
                             me.listPerson('1','','name');
@@ -367,14 +394,17 @@
                                     this.errorPerson=0;
                                     this.modal=1;
                                     this.name='';
-                                    this.titleModal='Registrar Cliente';
+                                    this.titleModal='Registrar Proveedor';
                                     this.description='';
                                     this.typeAction=1;
                                     this.document_type='DNI';
+                                    this.contactPhone='';
                                     this.document_num='';
                                     this.address='';
                                     this.phone='';
                                     this.mail='';
+                                    this.person_id;
+
                                     break;
 
 
@@ -383,16 +413,17 @@
                                 {
                                     this.errorPerson=0;
                                     this.modal=1;
-                                    this.titleModal='Actualizar Cliente';
+                                    this.titleModal='Actualizar Proveedor';
                                     this.Person_id=data['id'];
                                     this.name=data['name'];
                                     this.document_type=data['document_type'];
-                                    this.document_num=data['document_num'];
-
                                     this.address=data['address'];
                                     this.phone=data['phone'];
                                     this.typeAction=2;
                                     this.mail=data['mail'];
+                                    this.contactPhone=data['contact_phone'];
+                                    this.contact=data['contact'];
+                                    this.document_num=data['document_num'];
 
                                     break;
 
@@ -408,12 +439,14 @@
             {
                 this.modal=0;
                 this.name='';
-                this.document_type='DNI';
+                this.document_type='RUC';
                 this.document_num='';
                 this.address='';
                 this.titleModal='';
                 this.phone='';
                 this.mail='';
+                this.contact='';
+                this.contactPhone='';
                 this.errorPerson=0;
                                    
 
@@ -423,6 +456,8 @@
         
     
                 },
+
+            
 
         mounted() {
             this.listPerson(1, this.search, this.criteria);
