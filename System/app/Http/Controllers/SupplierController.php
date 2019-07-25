@@ -39,7 +39,7 @@ class SupplierController extends Controller
                 'from' => $Supplier->firstItem(),
                 'to' => $Supplier->lastItem()
             ],
-            'supplier' => $Supplier
+            'Supplier' => $Supplier
         ];
 
 
@@ -50,13 +50,13 @@ class SupplierController extends Controller
         if(!$request->ajax()) return redirect('/');
         try
         {
-            DB:beginTransaction();
+            DB::beginTransaction();
             $person = new Person();
             $person->fill($request->all());
             $person->save();
-            $supplier = new Supplier();
+            $supplier = new Suppliers();
             $supplier->fill($request->all());
-            $supplier-save();
+            $supplier->save();
 
             DB::commit();
 
@@ -75,14 +75,15 @@ class SupplierController extends Controller
 
         try
         {
-            DB:beginTransaction();
-            $supplier = Suppliers::findOrFail($supplier->id);
-            $person = Suppliers::findOrFail($person->id);
+            
+            DB::beginTransaction();
             $supplier = new Suppliers();
-            $person = new Person();
-            $person -> fill($request->all());
+            $supplier = Suppliers::findOrFail($request->id);
             $supplier -> fill($request->all());
             $supplier->save();
+            $person = new Person();
+            $person = Person::findOrFail($supplier->id);
+            $person -> fill($request->all());
             $person->save();
 
             DB::commit();

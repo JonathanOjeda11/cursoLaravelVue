@@ -387,6 +387,8 @@
                                     this.Person_id=data['id'];
                                     this.name=data['name'];
                                     this.document_type=data['document_type'];
+                                    this.document_num=data['document_num'];
+
                                     this.address=data['address'];
                                     this.phone=data['phone'];
                                     this.typeAction=2;

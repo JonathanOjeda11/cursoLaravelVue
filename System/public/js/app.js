@@ -56052,6 +56052,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.Person_id = data['id'];
                                     this.name = data['name'];
                                     this.document_type = data['document_type'];
+                                    this.document_num = data['document_num'];
+
                                     this.address = data['address'];
                                     this.phone = data['phone'];
                                     this.typeAction = 2;
@@ -57169,6 +57171,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -57235,8 +57255,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/proveedor?page=' + page + '&search=' + search + '&criteria=' + criteria;
             axios.get(url).then(function (response) {
                 var answer = response.data;
-                me.arrayPerson = answer.supplier.data;
+                me.arrayPerson = answer.Supplier.data;
                 me.pagination = answer.pagination;
+                console.log(me.arrayPerson);
             }).catch(function (error) {
                 console.log(error);
             }).then(function () {
@@ -57244,13 +57265,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         registerPerson: function registerPerson() {
-            if (this.validateSupplier()) {
+            if (this.validatePerson()) {
                 return;
             }
             var me = this;
-            axios.post('/proveedor/registrar', {}).then(function (response) {
+            axios.post('/proveedor/registrar', {
+                'name': this.name,
+                'document_type': this.document_type,
+                'document_num': this.document_num,
+                'address': this.address,
+                'phone': this.phone,
+                'mail': this.mail,
+                'contact': this.contact,
+                'contact_phone': this.contactPhone,
+                'id': this.person_id
+
+            }).then(function (response) {
                 me.closeModal();
-                me.listSupplier('1', '', 'name');
+                me.listPerson('1', '', 'name');
             }).catch(function (error) {
                 console.log(error);
             }).then(function () {
@@ -57269,14 +57301,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
             var me = this;
-            axios.put('/cliente/actualizar', {
+            axios.put('/proveedor/actualizar', {
                 'name': this.name,
                 'document_type': this.document_type,
                 'document_num': this.document_num,
                 'address': this.address,
                 'phone': this.phone,
                 'mail': this.mail,
-                'id': this.Person_id
+                'id': this.Person_id,
+                'contact': this.contact,
+                'contact_phone': this.contactPhone
             }).then(function (response) {
                 me.closeModal();
                 me.listPerson('1', '', 'name');
@@ -57305,21 +57339,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.errorPerson = 0;
                                     this.modal = 1;
                                     this.name = '';
-                                    this.titleModal = 'Registrar Cliente';
+                                    this.titleModal = 'Registrar Proveedor';
                                     this.description = '';
                                     this.typeAction = 1;
                                     this.document_type = 'DNI';
+                                    this.contactPhone = '';
                                     this.document_num = '';
                                     this.address = '';
                                     this.phone = '';
                                     this.mail = '';
+                                    this.person_id;
+
                                     break;
                                 }
                             case 'update':
                                 {
                                     this.errorPerson = 0;
                                     this.modal = 1;
-                                    this.titleModal = 'Actualizar Cliente';
+                                    this.titleModal = 'Actualizar Proveedor';
                                     this.Person_id = data['id'];
                                     this.name = data['name'];
                                     this.document_type = data['document_type'];
@@ -57327,6 +57364,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.phone = data['phone'];
                                     this.typeAction = 2;
                                     this.mail = data['mail'];
+                                    this.contactPhone = data['contact_phone'];
+                                    this.contact = data['contact'];
+                                    this.document_num = data['document_num'];
 
                                     break;
                                 }
@@ -57338,12 +57378,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         closeModal: function closeModal() {
             this.modal = 0;
             this.name = '';
-            this.document_type = 'DNI';
+            this.document_type = 'RUC';
             this.document_num = '';
             this.address = '';
             this.titleModal = '';
             this.phone = '';
             this.mail = '';
+            this.contact = '';
+            this.contactPhone = '';
             this.errorPerson = 0;
         }
     },
@@ -57937,6 +57979,86 @@ var render = function() {
                                 return
                               }
                               _vm.mail = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "help-block" })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
+                        [_vm._v("Contacto")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.contact,
+                              expression: "contact"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Nombre del Contacto"
+                          },
+                          domProps: { value: _vm.contact },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.contact = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "help-block" })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
+                        [_vm._v("Numero de contacto")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.contactPhone,
+                              expression: "contactPhone"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Ingrese el numero del contacto"
+                          },
+                          domProps: { value: _vm.contactPhone },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.contactPhone = $event.target.value
                             }
                           }
                         }),

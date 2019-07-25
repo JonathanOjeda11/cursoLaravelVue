@@ -18,7 +18,7 @@ class CreateSuppliersTable extends Migration
             $table->string('contact', 50)->nullable();
             $table->string('contact_phone', 50)->nullable();
             
-            $table->foreign('id')->references('id')->on('people')->onDelete('cascade');
+           // $table->foreign('id')->references('id')->on('people')->onDelete('cascade');
         });
     }
 
