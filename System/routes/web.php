@@ -36,4 +36,4 @@ Route::get('/proveedor', 'SupplierController@index');
 Route::post('/proveedor/registrar','SupplierController@store');
 Route::put('/proveedor/actualizar','SupplierController@update');
 
-Route::get('/rol','rolController@index');
+Route::get('/rol','RolController@index');
