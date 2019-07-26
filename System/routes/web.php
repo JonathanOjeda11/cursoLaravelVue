@@ -32,7 +32,8 @@ Route::get('/cliente', 'ClientController@index');
 Route::post('/cliente/registrar','ClientController@store');
 Route::put('/cliente/actualizar','ClientController@update');
 
-
 Route::get('/proveedor', 'SupplierController@index');
 Route::post('/proveedor/registrar','SupplierController@store');
 Route::put('/proveedor/actualizar','SupplierController@update');
+
+Route::get('/rol','RolController@index');

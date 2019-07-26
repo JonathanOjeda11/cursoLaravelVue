@@ -14,7 +14,7 @@
         <h1>Contenido del menu numero 3</h1>
     </template>
     <template v-if="menu==4">
-        <Supplier><Supplier/>
+        <Supplier></Supplier>
     </template>
     <template v-if="menu==5">
         <h1>Contenido del menu numero 5</h1>
@@ -26,7 +26,7 @@
         <h1>Contenido del menu numero 7</h1>
     </template>
     <template v-if="menu==8">
-        <h1>Contenido del menu numero 8</h1>
+        <Rol></Rol>
     </template>
     <template v-if="menu==9">
         <h1>Contenido del menu numero 9</h1>
