@@ -141,7 +141,7 @@
             listRol(page, search, criteria)
             {
                let me = this;
-                    var url = '/categoria?page='+page+'&search='+search+'&criteria='+criteria;
+                    var url = '/rol?page='+page+'&search='+search+'&criteria='+criteria;
                     axios.get(url).then(function (response) {
                         var answer = response.data;
                         me.arrayRol=answer.roles.data

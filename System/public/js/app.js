@@ -58506,7 +58506,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         listRol: function listRol(page, search, criteria) {
             var me = this;
-            var url = '/categoria?page=' + page + '&search=' + search + '&criteria=' + criteria;
+            var url = '/rol?page=' + page + '&search=' + search + '&criteria=' + criteria;
             axios.get(url).then(function (response) {
                 var answer = response.data;
                 me.arrayRol = answer.roles.data;
