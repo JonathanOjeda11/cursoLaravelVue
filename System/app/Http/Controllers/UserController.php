@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Person;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -16,28 +18,28 @@ class UserController extends Controller
 
         if($search=='')
         {
-            $persons=User::join('people','users.id','=','people.id')->join('roles','users.rol_id', '=', 'people.id')
+            $person=User::join('people','users.id','=','people.id')->join('roles','users.rol_id', '=', 'roles.id')
             ->select('people.id','people.name','people.document_type','people.document_num','people.address','people.phone',
-            'people.mail','suppliers.contact','suppliers.contact_phone')
+            'people.mail','users.user','users.password','users.status', 'users.rol_id','roles.name as rol')
             ->orderBy('people.id','desc')->paginate(3);
         }else
         {
-            $supplier=Supplier::join('people','suppliers.id','=','people.id')
+            $person=User::join('people','users.id','=','people.id')->join('roles','users.rol_id', '=', 'roles.id')
             ->select('people.id','people.name','people.document_type','people.document_num','people.address','people.phone',
-            'people.mail','suppliers.contact','suppliers.contact_phone')
+            'people.mail','users.user','users.password','users.status', 'users.rol_id','roles.name as rol')
             ->orderBy('people.id','desc')->where($criteria, 'like', '%'. $search . '%')->paginate(3);
         }
 
         return [
             'pagination' => [
-                'total' => $supplier->total(),
-                'current_page' => $supplier->currentPage(),
-                'per_page' => $supplier->perPage(),
-                'last_page' => $supplier->lastPage(),
-                'from' => $supplier->firstItem(),
-                'to' => $supplier->lastItem()
+                'total' => $person->total(),
+                'current_page' => $person->currentPage(),
+                'per_page' => $person->perPage(),
+                'last_page' => $person->lastPage(),
+                'from' => $person->firstItem(),
+                'to' => $person->lastItem()
             ],
-            'supplier' => $supplier
+            'person' => $person
         ];
 
 
@@ -52,9 +54,13 @@ class UserController extends Controller
             $person = new Person();
             $person->fill($request->all());
             $person->save();
-            $supplier = new Supplier();
-            $supplier->fill($request->all());
-            $supplier->save();
+
+            $user = new User();
+            $user->fill($request->all());
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            $user->id = $person->id;
 
             DB::commit();
 
@@ -75,12 +81,13 @@ class UserController extends Controller
         {
             
             DB::beginTransaction();
-            $supplier = new Supplier();
-            $supplier = Supplier::findOrFail($request->id);
-            $supplier -> fill($request->all());
-            $supplier->save();
+            $user = new User();
+            $user = Userr::findOrFail($request->id);
+            $user -> fill($request->all());
+            $user->password = bcrypt($request->password);
+            $user->save();
             $person = new Person();
-            $person = Person::findOrFail($supplier->id);
+            $person = Person::findOrFail($user->id);
             $person -> fill($request->all());
             $person->save();
 
@@ -96,15 +103,15 @@ class UserController extends Controller
     public function desactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        $category = Category::findOrFail($request->id);
-        $category->status='0';
-        $category->save();
+        $user = User::findOrFail($request->id);
+        $user->status='0';
+        $user->save();
     }
 
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');  
-        $category = Category::findOrFail($request->id);
+        $category = User::findOrFail($request->id);
         $category->status='1';
         $category->save();
     }

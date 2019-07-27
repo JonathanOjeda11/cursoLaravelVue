@@ -23,7 +23,7 @@
         <Client></Client>
     </template>
     <template v-if="menu==7">
-        <h1>Contenido del menu numero 7</h1>
+        <User></User>
     </template>
     <template v-if="menu==8">
         <Rol></Rol>

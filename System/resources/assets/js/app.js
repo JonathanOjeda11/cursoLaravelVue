@@ -20,7 +20,7 @@ Vue.component('Articlee', require('./components/Article.vue'));
 Vue.component('Client', require('./components/Client.vue'));
 Vue.component('Supplier', require('./components/Supplier.vue'));
 Vue.component('Rol', require('./components/Rol.vue'));
-
+Vue.component('User', require('./components/User.vue'));
 const app = new Vue({
     el: '#app',
     data:{
