@@ -56,6 +56,7 @@ class SupplierController extends Controller
             $person->save();
             $supplier = new Supplier();
             $supplier->fill($request->all());
+            $supplier->id = $person->id;
             $supplier->save();
 
             DB::commit();

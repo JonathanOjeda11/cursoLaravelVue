@@ -58,9 +58,11 @@ class UserController extends Controller
             $user = new User();
             $user->fill($request->all());
             $user->password = bcrypt($request->password);
+            $user->id = $person->id;
+            
             $user->save();
 
-            $user->id = $person->id;
+           
 
             DB::commit();
 
