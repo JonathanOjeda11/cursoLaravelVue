@@ -82,7 +82,7 @@ class UserController extends Controller
             
             DB::beginTransaction();
             $user = new User();
-            $user = Userr::findOrFail($request->id);
+            $user = User::findOrFail($request->id);
             $user -> fill($request->all());
             $user->password = bcrypt($request->password);
             $user->save();

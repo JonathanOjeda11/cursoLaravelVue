@@ -148,17 +148,30 @@
                                     </div>
 
                                     <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Contacto</label>
+                                    <label class="col-md-3 form-control-label" for="text-input">Rol (*)</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="contact" class="form-control" placeholder="Nombre del Contacto">
+                                        <select class="form-control" v-model="rol_id">
+                                            <option value="0">Seleccione un rol</option>
+                                            <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.name">
+
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Usuario (*)</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="user" class="form-control" placeholder="Nombre del Usuario">
                                         <span class="help-block"></span>
                                     </div>
                                     </div>
 
                                     <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Numero de contacto</label>
+                                    <label class="col-md-3 form-control-label" for="text-input">Password (*)</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="contactPhone" class="form-control" placeholder="Ingrese el numero del contacto">
+                                        <input type="password" v-model="password" class="form-control" placeholder="Ingrese el password">
                                         <span class="help-block"></span>
                                     </div>
                                     </div>
@@ -228,9 +241,10 @@
                     phone:'',
                     mail:'',   
                     user:'',
-                    pass:'',
+                    password:'',
                     rol_id:0,    
                     arrayPerson:[],
+                    arrayRol:[],
                     modal:0,
                     titleModal:'',
                     typeAction:0,
@@ -306,6 +320,24 @@
                     });  
 
             },
+            selectRol()
+            {
+                    let me = this;
+                    var url = '/rol/selectRol';
+                    axios.get(url).then(function (response) {
+                        var answer = response.data;
+                        me.arrayRol=answer.roles
+                        
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });  
+
+            },
             registerPerson()
             {
                 if(this.validatePerson())
@@ -320,9 +352,9 @@
                      'address':this.address,
                      'phone':this.phone,
                      'mail':this.mail,
-                     'contact':this.contact,
-                     'contact_phone':this.contactPhone,
-                     'id':this.person_id
+                     'user':this.user,
+                     'password':this.password,
+                     'rol_id':this.rol_id
 
 
                  }).then(function (response) {
@@ -363,8 +395,10 @@
                                 'phone':this.phone,
                                 'mail':this.mail,
                                 'id':this.Person_id,
-                                'contact':this.contact,
-                                'contact_phone':this.contactPhone
+                                'user':this.user,
+                                'password':this.password,
+                                'rol_id':this.rol_id
+
                             }).then(function (response) {
                             me.closeModal();
                             me.listPerson('1','','name');
@@ -382,12 +416,17 @@
                     this.errorPerson=0;
                     this.errorShowMsjPerson=[];
                     if(!this.name) this.errorShowMsjPerson.push("El nombre de la persona no puede estar vacio");
+                    if(!this.user) this.errorShowMsjPerson.push("El nombre de usuario no puede estar vacio");
+                    if(!this.password) this.errorShowMsjPerson.push("El password no puede estar vacio");
+                    if(this.rol_id==0) this.errorShowMsjPerson.push("Debes seleccionar un rol");
+
                     if(this.errorShowMsjPerson.length) this.errorPerson=1;
                     return this.errorPerson;
 
                 },
             openModal(model, action, data=[])
             {
+                this.selectRol();
                 switch(model)
                 {
                 case "Person":
@@ -399,7 +438,10 @@
                                     this.errorPerson=0;
                                     this.modal=1;
                                     this.name='';
-                                    this.titleModal='Registrar Proveedor';
+                                    this.titleModal='Registrar Usuario';
+                                    this.user='';
+                                    this.password='';
+                                    this.rol_id=0;
                                     this.description='';
                                     this.typeAction=1;
                                     this.document_type='DNI';
@@ -418,12 +460,15 @@
                                 {
                                     this.errorPerson=0;
                                     this.modal=1;
-                                    this.titleModal='Actualizar Proveedor';
+                                    this.titleModal='Actualizar Usuario';
                                     this.Person_id=data['id'];
                                     this.name=data['name'];
                                     this.document_type=data['document_type'];
                                     this.address=data['address'];
                                     this.phone=data['phone'];
+                                    this.rol_id=data['rol_id'];
+                                    this.user=data['user'];
+                                    this.password=data['password']
                                     this.typeAction=2;
                                     this.mail=data['mail'];
                                     this.contactPhone=data['contact_phone'];
@@ -453,6 +498,10 @@
                 this.contact='';
                 this.contactPhone='';
                 this.errorPerson=0;
+                this.user='';
+                this.password='';
+                this.rol_id=0;
+                
                                    
 
             },
