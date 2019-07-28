@@ -381,7 +381,7 @@
                     }).then((result) => {
                     if (result.value) {
                         let me=this;
-                        axios.put('/categoria/desactivar',{
+                        axios.put('/user/desactivar',{
                             'id':id
                             }).then(function (response) {
                                 swalWithBootstrapButtons.fire(
@@ -434,7 +434,7 @@
                     }).then((result) => {
                     if (result.value) {
                         let me=this;
-                        axios.put('/categoria/activar',{
+                        axios.put('/user/activar',{
                             'id':id
                             }).then(function (response) {
                                 swalWithBootstrapButtons.fire(
@@ -442,7 +442,7 @@
                                 'Your file has been added.',
                                 'success'
                                 )
-                            me.listCategory('1','','name');
+                            me.listPerson('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -464,7 +464,8 @@
                         )
                     }
                     })
-                }},
+                }
+            },
 
         mounted() {
             this.listCategory(1, this.search, this.criteria);

@@ -51,7 +51,17 @@
                                     <td>
                                         <button type="button" class="btn btn-warning btn-sm"  @click="openModal('Person','update',Person)">
                                           <i class="icon-pencil"></i>
-                                        </button> 
+                                        </button>
+                                        <template v-if="Person.status">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="disableUser(Person.id)">
+                                                <i class="icon-trash"></i>                                         
+                                            </button>
+                                        </template>
+                                         <template v-else>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="enableUser(Person.id)">
+                                                <i class="icon-check"></i>                                         
+                                            </button>
+                                        </template>
                                     </td>
                                     <td v-text="Person.name"></td>
                                     <td v-text="Person.document_type"></td>
@@ -411,6 +421,12 @@
                             });  
                     
                 },
+
+
+
+
+
+
             validatePerson()
                 {
                     this.errorPerson=0;
@@ -474,7 +490,7 @@
                                     this.contactPhone=data['contact_phone'];
                                     this.contact=data['contact'];
                                     this.document_num=data['document_num'];
-                                    
+
 
                                     break;
 
@@ -506,19 +522,125 @@
                                    
 
             },
-            
-            
-        
-    
+
+
+               disableUser(id)
+                {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false,
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+                        let me=this;
+                        axios.put('/user/desactivar',{
+                            'id':id
+                            }).then(function (response) {
+                                swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                                )
+                            me.listCategory('1','','name');
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            // always executed
+                            });  
+                    
+
+                    
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                        )
+                    }
+                    })
                 },
 
-            
+                enableUser(id)
+                {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false,
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, activate it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+                        let me=this;
+                        axios.put('/user/activar',{
+                            'id':id
+                            }).then(function (response) {
+                                swalWithBootstrapButtons.fire(
+                                'Added!',
+                                'Your file has been added.',
+                                'success'
+                                )
+                            me.listPerson('1','','name');
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            // always executed
+                            });  
+                    
+
+                    
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                        )
+                    }
+                    })
+                },
+
+        },
+   
+
+     
 
         mounted() {
             this.listPerson(1, this.search, this.criteria);
         }
     
         }
+
         </script>
         <style>
         .mostrar

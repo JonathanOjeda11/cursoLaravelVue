@@ -50841,7 +50841,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 if (result.value) {
                     var me = _this;
-                    axios.put('/categoria/desactivar', {
+                    axios.put('/user/desactivar', {
                         'id': id
                     }).then(function (response) {
                         swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success');
@@ -50880,11 +50880,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 if (result.value) {
                     var me = _this2;
-                    axios.put('/categoria/activar', {
+                    axios.put('/user/activar', {
                         'id': id
                     }).then(function (response) {
                         swalWithBootstrapButtons.fire('Added!', 'Your file has been added.', 'success');
-                        me.listCategory('1', '', 'name');
+                        me.listPerson('1', '', 'name');
                     }).catch(function (error) {
                         console.log(error);
                     }).then(function () {
@@ -59118,6 +59118,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -59347,6 +59357,84 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.user = '';
             this.password = '';
             this.rol_id = 0;
+        },
+        disableUser: function disableUser(id) {
+            var _this = this;
+
+            var swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    var me = _this;
+                    axios.put('/user/desactivar', {
+                        'id': id
+                    }).then(function (response) {
+                        swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success');
+                        me.listCategory('1', '', 'name');
+                    }).catch(function (error) {
+                        console.log(error);
+                    }).then(function () {
+                        // always executed
+                    });
+                } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+                }
+            });
+        },
+        enableUser: function enableUser(id) {
+            var _this2 = this;
+
+            var swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, activate it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    var me = _this2;
+                    axios.put('/user/activar', {
+                        'id': id
+                    }).then(function (response) {
+                        swalWithBootstrapButtons.fire('Added!', 'Your file has been added.', 'success');
+                        me.listPerson('1', '', 'name');
+                    }).catch(function (error) {
+                        console.log(error);
+                    }).then(function () {
+                        // always executed
+                    });
+                } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+                }
+            });
         }
     },
 
@@ -59506,21 +59594,57 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayPerson, function(Person) {
                   return _c("tr", { key: Person.id }, [
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-warning btn-sm",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.openModal("Person", "update", Person)
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning btn-sm",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openModal("Person", "update", Person)
+                              }
                             }
-                          }
-                        },
-                        [_c("i", { staticClass: "icon-pencil" })]
-                      )
-                    ]),
+                          },
+                          [_c("i", { staticClass: "icon-pencil" })]
+                        ),
+                        _vm._v(" "),
+                        Person.status
+                          ? [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.disableUser(Person.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-trash" })]
+                              )
+                            ]
+                          : [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.enableUser(Person.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-check" })]
+                              )
+                            ]
+                      ],
+                      2
+                    ),
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(Person.name) }
