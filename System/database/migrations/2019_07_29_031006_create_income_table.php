@@ -15,6 +15,17 @@ class CreateIncomeTable extends Migration
     {
         Schema::create('income', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('supplier_id')->unsigned();
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('voucher_type',20);
+            $table->string('voucher_serie', 7)->nullable();
+            $table->string('voucher_num', 10);
+            $table->dateTime('date');
+            $table->decimal('tax',4,2);
+            $table->decimal('total',11,2);
+            $table->string('status',20);
             $table->timestamps();
         });
     }

@@ -18,7 +18,6 @@ class LoginController extends Controller
                
 
         if (Auth::attempt(['user' => $request->user,'password' => $request->password])){
-            dd($request);
             return redirect()->route('main');
         }
     return redirect()->route('main');

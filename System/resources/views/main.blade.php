@@ -58,7 +58,7 @@
                     <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
                     <span class="d-md-down-none">
 
-                        {{Auth::user()->user}}
+                       
 
 
                     </span>
@@ -85,10 +85,10 @@
     </header>
 
     <div class="app-body">
-        
+         @include('template.sidebaradmin')
         @if(Auth::check())
             @if(Auth::user()->rol_id==1)
-                @include('template.sidebaradmin')
+               
             @elseif(Auth::user()->rol_id==2)
                 @include('template.sidebarvendedor')
             @elseif(Auth::user()->rol_id==3)

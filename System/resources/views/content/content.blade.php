@@ -1,9 +1,7 @@
     @extends('main')
     @section('content')
 
-    @if(Auth::check())
-            @if(Auth::user()->rol_id==1)
-                 
+    
 
                  <template v-if="menu==0">
                     <h1>Escritorio</h1>
@@ -47,7 +45,9 @@
                     <h1>Acerca de</h1>
                 </template>
 
-                
+                @if(Auth::check())
+            @if(Auth::user()->rol_id==1)
+                 
      
             @elseif(Auth::user()->rol_id==2)
                 <template v-if="menu==5">

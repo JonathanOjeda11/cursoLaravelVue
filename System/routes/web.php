@@ -11,12 +11,12 @@
 |
 */
 
-Route::group(['middleware' => ['guest']], function () {
+// Route::group(['middleware' => ['guest']], function () {
 	Route::get('/', 'Auth\LoginController@showLoginForm');
 	Route::post('/login','Auth\LoginController@login')->name('login');
- });
+//  });
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('/main', function () {
     return view('content/content');
@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
  
 
-	Route::group(['middleware' => ['storekeeper']], function () {
+	// Route::group(['middleware' => ['storekeeper']], function () {
 		Route::get('/categoria', 'CategoryController@index');
 		Route::post('/categoria/registrar','CategoryController@store');
 		Route::put('/categoria/actualizar','CategoryController@update');
@@ -42,17 +42,22 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/proveedor', 'SupplierController@index');
 		Route::post('/proveedor/registrar','SupplierController@store');
 		Route::put('/proveedor/actualizar','SupplierController@update');
-	 });
 
-	Route::group(['middleware' => ['seller']], function () {
+		Route::get('/ingreso','EntryController@index');
+		Route::get('/ingreso/registrar','EntryController@store');
+		Route::get('/ingreso/desactivar','EntryController@desactivate');
+
+	 // });
+
+	// Route::group(['middleware' => ['seller']], function () {
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
 		Route::put('/cliente/actualizar','ClientController@update');
 
-	 });
+	 // });
 
-	Route::group(['middleware' => ['admin']], function()
-	{
+	// Route::group(['middleware' => ['admin']], function()
+	// {
 		Route::get('/categoria', 'CategoryController@index');
 		Route::post('/categoria/registrar','CategoryController@store');
 		Route::put('/categoria/actualizar','CategoryController@update');
@@ -69,6 +74,10 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/proveedor', 'SupplierController@index');
 		Route::post('/proveedor/registrar','SupplierController@store');
 		Route::put('/proveedor/actualizar','SupplierController@update');
+
+		Route::get('/ingreso','EntryController@index');
+		Route::get('/ingreso/registrar','EntryController@store');
+		Route::get('/ingreso/desactivar','EntryController@desactivate');
 
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
@@ -83,12 +92,12 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::put('/user/desactivar','UserController@desactivate');
 		Route::put('/user/activar','UserController@activate');
 
+		Route::get('/ingreso','EntryController@index');
 
 
+//  });
 
- });
-
-});
+// });
 
 
 
