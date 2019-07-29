@@ -60733,6 +60733,106 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -60741,13 +60841,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             income_id: 0,
             supplier_id: 0,
             name: '',
-            voucher_type: 'Boleta',
+            voucher_type: 'BOLETA',
             voucher_num: '',
             voucher_serie: '',
             tax: 0.18,
             total: 0.0,
             price: 0,
             article_id: 0,
+            list: 1,
             arrayIncome: [],
             arrayDetail: [],
             modal: 0,
@@ -60823,7 +60924,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // always executed
             });
         },
-        registerPerson: function registerPerson() {
+        showDetail: function showDetail() {
+            this.list = 0;
+        },
+        hideDetail: function hideDetail() {
+            this.list = 1;
+        },
+        registerIncome: function registerIncome() {
             if (this.validatePerson()) {
                 return;
             }
@@ -61060,523 +61167,625 @@ var render = function() {
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Ingresos\n                "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.openModal("income", "register")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
-              _c("div", { staticClass: "input-group" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.criteria,
-                        expression: "criteria"
-                      }
-                    ],
-                    staticClass: "form-control col-md-3",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.criteria = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "voucher_type" } }, [
-                      _vm._v("Tipo de comprobante")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "voucher_num" } }, [
-                      _vm._v("Numero de comprobante")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "date" } }, [
-                      _vm._v("Fecha-Hora")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.search,
-                      expression: "search"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    name: "texto",
-                    placeholder: "Texto a buscar"
-                  },
-                  domProps: { value: _vm.search },
-                  on: {
-                    keyup: function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.listIncome(1, _vm.search, _vm.criteria)
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.search = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { type: "submit" },
-                    on: {
-                      click: function($event) {
-                        return _vm.listIncome(1, _vm.search, _vm.criteria)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fa fa-search" }), _vm._v(" Buscar")]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "table-responsive" }, [
+      _c(
+        "div",
+        { staticClass: "card" },
+        [
+          _c("div", { staticClass: "card-header" }, [
+            _c("i", { staticClass: "fa fa-align-justify" }),
+            _vm._v(" Ingresos\n                "),
             _c(
-              "table",
-              { staticClass: "table table-bordered table-striped table-sm" },
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.showDetail()
+                  }
+                }
+              },
               [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.arrayIncome, function(income) {
-                    return _c("tr", { key: income.id }, [
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-success btn-sm",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.openModal(
-                                    "income",
-                                    "update",
-                                    income
-                                  )
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "icon-eye" })]
-                          ),
-                          _vm._v(" "),
-                          income.status == "Registrado"
-                            ? [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-danger btn-sm",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.disableIncome(income.id)
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "icon-trash" })]
-                                )
-                              ]
-                            : _vm._e()
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.user) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.name) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.voucher_type) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.voucher_serie) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.voucher_num) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.date) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.total) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.tax) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: { textContent: _vm._s(income.status) }
-                      })
-                    ])
-                  }),
-                  0
-                )
+                _c("i", { staticClass: "icon-plus" }),
+                _vm._v(" Nuevo\n                ")
               ]
             )
           ]),
           _vm._v(" "),
-          _c("nav", [
-            _c(
-              "ul",
-              { staticClass: "pagination" },
-              [
-                _vm.pagination.current_page > 1
-                  ? _c("li", { staticClass: "page-item" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "page-link",
-                          attrs: { href: "#" },
+          _vm.list
+            ? [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "input-group" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.criteria,
+                                expression: "criteria"
+                              }
+                            ],
+                            staticClass: "form-control col-md-3",
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.criteria = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "voucher_type" } }, [
+                              _vm._v("Tipo de comprobante")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "voucher_num" } }, [
+                              _vm._v("Numero de comprobante")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "date" } }, [
+                              _vm._v("Fecha-Hora")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.search,
+                              expression: "search"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "texto",
+                            placeholder: "Texto a buscar"
+                          },
+                          domProps: { value: _vm.search },
                           on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.changePage(
-                                _vm.pagination.current_page - 1,
-                                _vm.search,
-                                _vm.criteria
-                              )
+                            keyup: function($event) {
+                              if (
+                                !$event.type.indexOf("key") &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              return _vm.listIncome(1, _vm.search, _vm.criteria)
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.search = $event.target.value
                             }
                           }
-                        },
-                        [_vm._v("Ant")]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.pagesNumber, function(page) {
-                  return _c(
-                    "li",
-                    {
-                      key: page,
-                      staticClass: "page-item active",
-                      class: [page == _vm.isActived ? "active" : ""]
-                    },
-                    [
-                      _c("a", {
-                        staticClass: "page-link",
-                        attrs: { href: "#" },
-                        domProps: { textContent: _vm._s(page) },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.changePage(
-                              page,
-                              _vm.search,
-                              _vm.criteria
-                            )
-                          }
-                        }
-                      })
-                    ]
-                  )
-                }),
-                _vm._v(" "),
-                _vm.pagination.current_page < _vm.pagination.last_page
-                  ? _c("li", { staticClass: "page-item" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "page-link",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.changePage(
-                                _vm.pagination.current_page + 1,
-                                _vm.search,
-                                _vm.criteria
-                              )
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.listIncome(
+                                  1,
+                                  _vm.search,
+                                  _vm.criteria
+                                )
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("Sig")]
-                      )
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-search" }),
+                            _vm._v(" Buscar")
+                          ]
+                        )
+                      ])
                     ])
-                  : _vm._e()
-              ],
-              2
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group row-border" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-3" }, [
-              _c("label", { attrs: { for: "" } }, [_vm._v("Impuesto")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.tax,
-                    expression: "tax"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.tax },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.tax = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Tipo Comprobante")]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c(
+                      "table",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.voucher_type,
-                        expression: "voucher_type"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.voucher_type = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v("Seleccione")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "BOLETA" } }, [
-                      _vm._v("Boleta")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "FACTURA" } }, [
-                      _vm._v("Factura")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "TICKET" } }, [
-                      _vm._v("Ticket")
-                    ])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Serie Comprobante")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.voucher_serie,
-                      expression: "voucher_serie"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Ingrese la serie del comprobante"
-                  },
-                  domProps: { value: _vm.voucher_serie },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.voucher_serie = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Numero de comprobante")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.voucher_num,
-                      expression: "voucher_num"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Ingreseel numero de comprobante"
-                  },
-                  domProps: { value: _vm.voucher_num },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.voucher_num = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ])
-          ]),
+                        staticClass:
+                          "table table-bordered table-striped table-sm"
+                      },
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.arrayIncome, function(income) {
+                            return _c("tr", { key: income.id }, [
+                              _c(
+                                "td",
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success btn-sm",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openModal(
+                                            "income",
+                                            "update",
+                                            income
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "icon-eye" })]
+                                  ),
+                                  _vm._v(" "),
+                                  income.status == "Registrado"
+                                    ? [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-danger btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.disableIncome(
+                                                  income.id
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-trash"
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    : _vm._e()
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.user) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.name) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(income.voucher_type)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(income.voucher_serie)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(income.voucher_num)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.date) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.total) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.tax) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(income.status) }
+                              })
+                            ])
+                          }),
+                          0
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("nav", [
+                    _c(
+                      "ul",
+                      { staticClass: "pagination" },
+                      [
+                        _vm.pagination.current_page > 1
+                          ? _c("li", { staticClass: "page-item" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.changePage(
+                                        _vm.pagination.current_page - 1,
+                                        _vm.search,
+                                        _vm.criteria
+                                      )
+                                    }
+                                  }
+                                },
+                                [_vm._v("Ant")]
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.pagesNumber, function(page) {
+                          return _c(
+                            "li",
+                            {
+                              key: page,
+                              staticClass: "page-item active",
+                              class: [page == _vm.isActived ? "active" : ""]
+                            },
+                            [
+                              _c("a", {
+                                staticClass: "page-link",
+                                attrs: { href: "#" },
+                                domProps: { textContent: _vm._s(page) },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.changePage(
+                                      page,
+                                      _vm.search,
+                                      _vm.criteria
+                                    )
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm.pagination.current_page < _vm.pagination.last_page
+                          ? _c("li", { staticClass: "page-item" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.changePage(
+                                        _vm.pagination.current_page + 1,
+                                        _vm.search,
+                                        _vm.criteria
+                                      )
+                                    }
+                                  }
+                                },
+                                [_vm._v("Sig")]
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  ])
+                ])
+              ]
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group row-border" }, [
-            _c("div", { staticClass: "col-md-6" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Articulo")]),
+          [
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "form-group row-border" }, [
+                _vm._m(2),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-inline" }, [
+                _c("div", { staticClass: "col-md-3" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Impuesto")]),
+                  _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.article_id,
-                        expression: "article_id"
+                        value: _vm.tax,
+                        expression: "tax"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Ingrese el ID del articulo"
-                    },
-                    domProps: { value: _vm.article_id },
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.tax },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.article_id = $event.target.value
+                        _vm.tax = $event.target.value
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _c("button", { staticClass: "btn-primary btn" }, [
-                    _vm._v("...")
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-4" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Tipo Comprobante")]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.voucher_type,
+                            expression: "voucher_type"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.voucher_type = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "0" } }, [
+                          _vm._v("Seleccione")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "BOLETA" } }, [
+                          _vm._v("Boleta")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "FACTURA" } }, [
+                          _vm._v("Factura")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "TICKET" } }, [
+                          _vm._v("Ticket")
+                        ])
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-4" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Serie Comprobante")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.voucher_serie,
+                          expression: "voucher_serie"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Ingrese la serie del comprobante"
+                      },
+                      domProps: { value: _vm.voucher_serie },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.voucher_serie = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-4" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Numero de comprobante")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.voucher_num,
+                          expression: "voucher_num"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Ingreseel numero de comprobante"
+                      },
+                      domProps: { value: _vm.voucher_num },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.voucher_num = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row-border" }, [
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Articulo")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.article_id,
+                            expression: "article_id"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Ingrese el ID del articulo"
+                        },
+                        domProps: { value: _vm.article_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.article_id = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn-primary btn" }, [
+                        _vm._v("...")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Precio")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.price,
+                          expression: "price"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "number", value: "0", step: "any" },
+                      domProps: { value: _vm.price },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.price = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Cantidad")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.amount,
+                          expression: "amount"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "number", value: "0", step: "any" },
+                      domProps: { value: _vm.amount },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.amount = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _vm._m(4),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.hideDetail()
+                          }
+                        }
+                      },
+                      [_vm._v("Cerrar")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.registerIncome()
+                          }
+                        }
+                      },
+                      [_vm._v("Registrar compra")]
+                    )
                   ])
                 ])
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Precio")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.price,
-                      expression: "price"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "number", step: "any" },
-                  domProps: { value: _vm.price },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.price = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(3)
-          ])
-        ])
-      ])
+            ])
+          ]
+        ],
+        2
+      )
     ]),
     _vm._v(" "),
     _c(
@@ -61681,7 +61890,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm._m(4)
+    _vm._m(5)
   ])
 }
 var staticRenderFns = [
@@ -61715,6 +61924,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Serie Comprobante")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Numero Comprobante")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Fecha-Hora")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
@@ -61747,6 +61958,138 @@ var staticRenderFns = [
           "button",
           { staticClass: "btn btn-success form-control btnagregar" },
           [_c("i", { staticClass: "icon-plus" })]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row border" }, [
+      _c("div", { staticClass: "table-responsive col-md-12" }, [
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("Opciones")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Articulos")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Precio")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Cantidad")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Subtotal")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      attrs: { type: "button" }
+                    },
+                    [_c("i", { staticClass: "icon-close" })]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                                            Articulo n\n                                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "number", value: "3" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "number", value: "2" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                                            $6.00\n                                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      attrs: { type: "button" }
+                    },
+                    [_c("i", { staticClass: "icon-close" })]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                                            Articulo n\n                                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "number", value: "3" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "number", value: "2" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                                            $6.00\n                                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticStyle: { "background-color": "#CEECF5" } }, [
+                _c("td", { attrs: { colspan: "4", align: "right" } }, [
+                  _c("strong", [_vm._v("Total Parcial:")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$5")])
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticStyle: { "background-color": "#CEECF5" } }, [
+                _c("td", { attrs: { colspan: "4", align: "right" } }, [
+                  _c("strong", [_vm._v("Total Impuesto:")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$1")])
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticStyle: { "background-color": "#CEECF5" } }, [
+                _c("td", { attrs: { colspan: "4", align: "right" } }, [
+                  _c("strong", [_vm._v("Total Neto:")])
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$5")])
+              ])
+            ])
+          ]
         )
       ])
     ])

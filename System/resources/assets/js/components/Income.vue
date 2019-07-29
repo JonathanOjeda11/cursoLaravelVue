@@ -11,10 +11,12 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Ingresos
-                        <button type="button" class="btn btn-secondary" @click="openModal('income','register')">
+                        <button type="button" class="btn btn-secondary" @click="showDetail()">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
+                    <!--Listado-->
+                    <template v-if="list">
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
@@ -42,6 +44,7 @@
                                     <th>Proveedor</th>
                                     <th>Tipo Comprobante</th>
                                     <th>Serie Comprobante</th>
+                                    <th>Numero Comprobante</th>
                                     <th>Fecha-Hora</th>
                                     <th>Total</th>
                                     <th>Impuesto</th>
@@ -90,6 +93,10 @@
                             </ul>
                         </nav>
                     </div>
+                    </template v-else>
+                    <!--Fin Listado-->
+                    <!--Detalle-->
+                    <template >
                     <div class="card-body">
                         <div class="form-group row-border">
                             <div class="col-md-6">
@@ -144,17 +151,110 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Precio</label>
-                                    <input type="number" class="form-control" v-model="price" step="any">
+                                    <input type="number" value="0" class="form-control" v-model="price" step="any">
                                 </div>
                             </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Cantidad</label>
+                                    <input type="number" value="0" class="form-control" v-model="amount" step="any">
+                                </div>
+                            </div>
+
+
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <button class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
                                 </div>
                             </div>
+
+                            <div class="form-group row border">
+                                <div class="table-responsive col-md-12">
+                                    <table class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Opciones</th>
+                                                <th>Articulos</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        <i class="icon-close"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    Articulo n
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="3" class="form-control">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="2" class="form-control">
+                                                </td>
+                                                <td>
+                                                    $6.00
+                                                </td>
+                                                
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        <i class="icon-close"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    Articulo n
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="3" class="form-control">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="2" class="form-control">
+                                                </td>
+                                                <td>
+                                                    $6.00
+                                                </td>
+                                                
+                                            </tr>
+
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
+                                                <td>$5</td>  
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
+                                                <td>$1</td>                                               
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" align="right"><strong>Total Neto:</strong></td>
+                                                <td>$5</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-secondary" @click="hideDetail()">Cerrar</button>
+                                    <button type="button" class="btn btn-primary" @click="registerIncome()">Registrar compra</button>
+                                    
+
+                                </div> 
+                            </div>
                         </div>
-                     
                     </div>
+                    </template>
+                    <!--Fin Detalle-->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -218,13 +318,14 @@
                     income_id:0,
                     supplier_id:0,
                     name:'',
-                    voucher_type:'Boleta',
+                    voucher_type:'BOLETA',
                     voucher_num:'',
                     voucher_serie:'',
                     tax:0.18,
                     total:0.0,
                     price:0,
                     article_id:0,
+                    list:1,
                     arrayIncome:[],
                     arrayDetail:[],
                     modal:0,
@@ -320,7 +421,17 @@
                     });  
 
             },
-            registerPerson()
+            showDetail()
+            {
+                this.list=0;
+
+            },
+            hideDetail()
+            {
+                this.list=1;
+
+            },
+            registerIncome()
             {
                 if(this.validatePerson())
                     {
