@@ -174,7 +174,7 @@
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <button class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
+                                    <button @click="addDetail()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
                                 </div>
                             </div>
 
@@ -190,48 +190,28 @@
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody v-if="arrayDetail.length">
+                                            <tr v-for = "detail in arrayDetail" :key="detail.id">
                                                 <td>
                                                     <button type="button" class="btn btn-danger btn-sm">
                                                         <i class="icon-close"></i>
                                                     </button>
                                                 </td>
-                                                <td>
-                                                    Articulo n
+                                                <td v-text="detail.article">
+                                                   
                                                 </td>
                                                 <td>
-                                                    <input type="number" value="3" class="form-control">
+                                                    <input type="number" v-model="detail.price" value="3" class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input type="number" value="2" class="form-control">
+                                                    <input type="number" v-model="detail.amount" value="2" class="form-control">
                                                 </td>
                                                 <td>
-                                                    $6.00
+                                                    {{detail.price*detail.amount}}
                                                 </td>
                                                 
                                             </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close"></i>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    Articulo n
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="3" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="2" class="form-control">
-                                                </td>
-                                                <td>
-                                                    $6.00
-                                                </td>
-                                                
-                                            </tr>
 
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
@@ -247,6 +227,15 @@
                                                 
                                             </tr>
                                         </tbody>
+                                        <tbody v-else>
+                                            <tr>
+                                                <td colspan="5">
+                                                    No hay articulos
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+
                                     </table>
                                 </div>
                             </div>
@@ -454,6 +443,18 @@ import vSelect from 'vue-select';
                 me.loading = true;
                 me.supplier_id = val1.id;
 
+
+            },
+
+            addDetail()
+            {
+                let me = this;
+                me.arrayDetail.push({
+                    article_id: me.article_id,
+                    article:me.article,
+                    amount:me.amount,
+                    price:me.price
+                });
 
             },
             searchArticle()
