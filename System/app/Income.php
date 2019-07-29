@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Income extends Model
 {
+
+    protected $table = 'income';
+
     protected $fillable = [
     	'supplier_id',
     	'user_id',
@@ -28,6 +31,6 @@ class Income extends Model
 
     public function supplier()
     {
-    	return $this->belongsTo('App\Supplier')
+    	return $this->belongsTo('App\Supplier');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,13 +14,15 @@ class LoginController extends Controller
 
     public function login(Request $request){
         $this->validateLogin($request); 
-               
+        
 
         if (Auth::attempt(['user' => $request->user,'password' => $request->password])){
             return redirect()->route('main');
         }
-    return redirect()->route('main');
+
+    
         return back()
+
         ->withErrors(['user' => trans('auth.failed')])
         ->withInput(request(['user']));
 

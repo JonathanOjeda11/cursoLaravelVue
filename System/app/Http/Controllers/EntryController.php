@@ -11,23 +11,25 @@ class EntryController extends Controller
 {
      public function index(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         
         $search=$request->search;
         $criteria=$request->criteria;
 
         if($search=='')
         {
-            $income=Income::join('people','income.supplier_id','=','people.id')->join('users','income.user_id', '=', 'users.id')
+            $income=Income::join('people','income.supplier_id','=','people.id')
+            ->join('users','income.user_id', '=', 'users.id')
             ->select('income.id','income.voucher_type','income.voucher_serie','income.voucher_num','income.date','income.tax',
             'income.total','income.status','people.name','users.user')
             ->orderBy('income.id','desc')->paginate(3);
         }else
         {
-        	$income=Income::join('people','income.supplier_id','=','people.id')->join('users','income.user_id', '=', 'users.id')
-            ->select('income.id','income.voucher_type','income.voucher_serie','income.voucher_num','income.date','income.tax',
-            'income.total','income.status','people.name','users.user')
-            ->where('income.'.$criteria, 'like', '%'. $search . '%')->orderBy('income.id','desc'->paginate(3);
+        	$income=Income::join('people','income.supplier_id','=','people.id')
+        	->join('users','income.user_id', '=', 'users.id')
+            ->select('income.id','income.voucher_type','income.voucher_serie','income.voucher_num','income.date','income.tax','income.total','income.status','people.name','users.user')
+            ->where('income.'.$criteria, 'like', '%'. $search . '%')
+            ->orderBy('income.id','desc')->paginate(3);
         }
 
         return [

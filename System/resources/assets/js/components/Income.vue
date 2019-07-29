@@ -90,6 +90,71 @@
                             </ul>
                         </nav>
                     </div>
+                    <div class="card-body">
+                        <div class="form-group row-border">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Proveedor</label>
+                                    <select class="form-control">
+                                        
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Impuesto</label>
+                                <input type="text" class="form-control" v-model="tax">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante</label>
+                                    <select class="form-control" v-model="voucher_type">
+                                        <option value="0">Seleccione</option>
+                                        <option value="BOLETA">Boleta</option>
+                                        <option value="FACTURA">Factura</option>
+                                        <option value="TICKET">Ticket</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Serie Comprobante</label>
+                                    <input type="text" class="form-control" v-model="voucher_serie" placeholder="Ingrese la serie del comprobante">
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Numero de comprobante</label>
+                                    <input type="text" class="form-control" v-model="voucher_num" placeholder="Ingreseel numero de comprobante">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row-border">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Articulo</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control" v-model="article_id" placeholder="Ingrese el ID del articulo">
+                                        <button class="btn-primary btn">...</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Precio</label>
+                                    <input type="number" class="form-control" v-model="price" step="any">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                     
+                    </div>
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -104,101 +169,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="name" class="form-control" placeholder="Nombre de la persona">
-                                        <span class="help-block"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="email-input">Tipo Documento</label>
-                                    <div class="col-md-9">
-                                       <select v-model="document_type">
-                                           <option value="DNI">DNI</option>
-                                           <option value="RUC">RUC</option>
-                                           <option value="PASS">PASS</option>
-                                       </select>
-
-
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Numero de documento</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="document_num" class="form-control" placeholder="Numero de documento">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-
-                                     <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Direccion</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="address" class="form-control" placeholder="Direccion">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-
-                                     <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Telefono</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="phone" class="form-control" placeholder="Telefono">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-
-                
-
-                                    <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Email</label>
-                                    <div class="col-md-9">
-                                        <input type="email" v-model="mail" class="form-control" placeholder="Email">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Rol (*)</label>
-                                    <div class="col-md-9">
-                                        <select class="form-control" v-model="rol_id">
-                                            <option value="0">Seleccione un rol</option>
-                                            <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.name">
-
-                                            </option>
-
-                                        </select>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Usuario (*)</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="user" class="form-control" placeholder="Nombre del Usuario">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Password (*)</label>
-                                    <div class="col-md-9">
-                                        <input type="password" v-model="password" class="form-control" placeholder="Ingrese el password">
-                                        <span class="help-block"></span>
-                                    </div>
-                                    </div>
-                                
-                                 <div v-show="errorPerson" class="form-group row div-error">
-                                    <div class="text-center text-error">
-                                        <div v-for="error in errorShowMsjPerson" :key="error" v-text="error">
-
-                                        </div>
-
-                                    </div>
-                             
-
-                                </div>
-
-                            </form>
+                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
@@ -252,6 +223,8 @@
                     voucher_serie:'',
                     tax:0.18,
                     total:0.0,
+                    price:0,
+                    article_id:0,
                     arrayIncome:[],
                     arrayDetail:[],
                     modal:0,
@@ -386,7 +359,7 @@
                     //Actualiza la pagina actual
                     me.pagination.current_page=page;
                     //Envia la peticion para mandar la pagina
-                    me.listPerson(page, search, criteria);
+                    me.listIncome(page, search, criteria);
 
                 },
             updatePerson()
@@ -410,7 +383,7 @@
 
                             }).then(function (response) {
                             me.closeModal();
-                            me.listPerson('1','','name');
+                            me.listIncome('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -552,7 +525,7 @@
                                 'Your file has been deleted.',
                                 'success'
                                 )
-                            me.listUser('1','','name');
+                            me.listIncome('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -605,7 +578,7 @@
                                 'Your file has been added.',
                                 'success'
                                 )
-                            me.listPerson('1','','name');
+                            me.listIncome('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -635,7 +608,7 @@
      
 
         mounted() {
-            this.listPerson(1, this.search, this.criteria);
+            this.listIncome(1, this.search, this.criteria);
         }
     
         }
@@ -664,6 +637,13 @@
         {
             color: red !important;
             font-weight: bold;
+        }
+        @media (min-width:600px)
+        {
+            .btnagregar
+            {
+                margin-top:2rem;
+            }
         }
 
 
