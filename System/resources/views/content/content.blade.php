@@ -14,7 +14,7 @@
                    
                 </template>
                 <template v-if="menu==3">
-                    <h1>Ingresos</h1>
+                    <Incomes></Incomes>
                 </template>
                 <template v-if="menu==4">
                     <Supplier></Supplier>
@@ -75,7 +75,7 @@
                    
                 </template>
                 <template v-if="menu==3">
-                    <h1>Ingresos</h1>
+                    <Incomes></Incomes>
                 </template>
                 <template v-if="menu==4">
                     <Supplier></Supplier>
