@@ -20,11 +20,7 @@
 <body class="app flex-row align-items-center">
   <div class="container">
     @yield('login')
-  </div>
-
-  <!-- Bootstrap and necessary plugins -->
-  <script src="js/template.js"></script>
-
+  </div>  
 
 </body>
 </html>

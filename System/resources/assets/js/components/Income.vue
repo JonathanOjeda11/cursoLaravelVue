@@ -102,9 +102,16 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Proveedor</label>
-                                    <select class="form-control">
-                                        
-                                    </select>
+                                    <v-select
+                                        :on-search="selectSupplier"
+                                        label="name"
+                                        :options="arraySupplier"
+                                        placeholder="Buscando Proveedores"
+                                        :onchange="getDataSupplier"
+
+                                    >
+
+                                    </v-select>
                                 </div>
                                 
                             </div>
@@ -133,7 +140,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Numero de comprobante</label>
-                                    <input type="text" class="form-control" v-model="voucher_num" placeholder="Ingreseel numero de comprobante">
+                                    <input type="text" class="form-control" v-model="voucher_num" placeholder="Ingrese el numero de comprobante">
                                 </div>
                             </div>
                         </div>
@@ -142,7 +149,8 @@
                                 <div class="form-group">
                                     <label for="">Articulo</label>
                                     <div class="form-inline">
-                                        <input type="text" class="form-control" v-model="article_id" placeholder="Ingrese el ID del articulo">
+                                        <input type="text" class="form-control" v-model="code" @keyup.enter="searchArticle()" placeholder="Ingrese el ID del articulo">
+                                        <input type="text" readonly class="form-control"v-model="article">
                                         <button class="btn-primary btn">...</button>
                                     </div>
                                 </div>
@@ -310,6 +318,8 @@
 </template>
 
 <script>
+
+import vSelect from 'vue-select';
     export default {
          data()
             {
@@ -328,10 +338,12 @@
                     list:1,
                     arrayIncome:[],
                     arrayDetail:[],
+                    arraySupplier:[],
                     modal:0,
                     titleModal:'',
                     typeAction:0,
                     errorIncome:0,
+                    amount:0,
                     contact:'',
                     contactPhone:'',
                     errorShowMsjIncome:[],
@@ -345,9 +357,20 @@
                     },
                     offset:3,
                     criteria: 'voucher_num',
-                    search: ''
+                    search: '',
+                    arrayArticle:[],
+                    article_id:0,
+                    code:'',
+                    article:'',
+                    price:0,
+                    amount:0
+
                    
                 }
+            },
+            components:{
+                vSelect
+
             },
             computed:
             {
@@ -403,13 +426,16 @@
                     });  
 
             },
-            selectRol()
+            selectSupplier(search, loading)
             {
                     let me = this;
-                    var url = '/rol/selectRol';
+                    loading(true)
+                    var url = '/supplier/selectSupplier?filter='+search;
                     axios.get(url).then(function (response) {
-                        var answer = response.data;
-                        me.arrayRol=answer.roles
+                        let answer = response.data;
+                        q: search
+                        me.arraySupplier=answer.supplier;
+                        loading(false)
                         
 
                     })
@@ -419,6 +445,44 @@
                     .then(function () {
                         // always executed
                     });  
+
+            },
+
+            getDataSupplier(val1)
+            {
+                let me = this;
+                me.loading = true;
+                me.supplier_id = val1.id;
+
+
+            },
+            searchArticle()
+            {
+                let me = this;
+                var url = '/articulo/buscarArticulo?filter='+me.code;
+
+                axios.get(url).then(function (response) {
+                        var answer = response.data;
+                        me.arrayArticle = answer.articles;
+
+                        if(me.arrayArticle.length>0)
+                        {
+                            me.article = me.arrayArticle[0]['name'];
+                            me.article_id = me.arrayArticle[0]['id'];
+
+                        }else{
+                            me.article = 'no existe articulo';
+                            me.article_id=0;
+                        }
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });  
+
 
             },
             showDetail()
