@@ -59384,7 +59384,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         'id': id
                     }).then(function (response) {
                         swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success');
-                        me.listCategory('1', '', 'name');
+                        me.listUser('1', '', 'name');
                     }).catch(function (error) {
                         console.log(error);
                     }).then(function () {

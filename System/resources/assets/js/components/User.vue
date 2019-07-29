@@ -553,7 +553,7 @@
                                 'Your file has been deleted.',
                                 'success'
                                 )
-                            me.listCategory('1','','name');
+                            me.listUser('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);

@@ -47,7 +47,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+     //   if(!$request->ajax()) return redirect('/');
         try
         {
             DB::beginTransaction();
