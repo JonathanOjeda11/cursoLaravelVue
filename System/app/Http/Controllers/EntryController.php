@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Income;
+use App\IncomeDetail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -50,7 +51,8 @@ class EntryController extends Controller
 
     public function store(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+
+       // if(!$request->ajax()) return redirect('/');
         try
         {
             DB::beginTransaction();
@@ -63,6 +65,8 @@ class EntryController extends Controller
             $income->user_id=\Auth::user()->id;
             $income->date=$time->toDateString();
             $income->status='Registrado';
+
+
             $income->save();
             
           
@@ -70,7 +74,7 @@ class EntryController extends Controller
             $details=$request->data;
 
             foreach ($details as $ep => $det) {
-            	$details = new IncomeDetails();
+            	$details = new IncomeDetail();
             	$details->entry_id = $income->id;
             	$details->article_id=$det['article_id'];
             	$details->amount=$det['amount'];

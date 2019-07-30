@@ -3,8 +3,6 @@
             <!-- Breadcrumb -->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
-                <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="container-fluid">
                 <!-- Ejemplo de tabla Listado -->
@@ -24,8 +22,7 @@
                                     <select class="form-control col-md-3" v-model="criteria">
                                       <option value="voucher_type">Tipo de comprobante</option>
                                       <option value="voucher_num">Numero de comprobante</option>
-                                      <option value="date">Fecha-Hora</option>
-                                      
+                                      <option value="date">Fecha-Hora</option> 
                                     </select>
                                     <input type="text" v-model="search" @keyup.enter="listIncome(1,search,criteria)" name="texto" class="form-control" placeholder="Texto a buscar">
                                     <button type="submit" @click="listIncome(1,search,criteria)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -93,13 +90,13 @@
                             </ul>
                         </nav>
                     </div>
-                    </template v-else>
+                    </template>
                     <!--Fin Listado-->
                     <!--Detalle-->
                     <template >
                     <div class="card-body">
                         <div class="form-group row-border">
-                            <div class="col-md-6">
+                            <div class="col-md-9">
                                 <div class="form-group">
                                     <label for="">Proveedor</label>
                                     <v-select
@@ -143,29 +140,39 @@
                                     <input type="text" class="form-control" v-model="voucher_num" placeholder="Ingrese el numero de comprobante">
                                 </div>
                             </div>
+
+                            <div class="col-md-12">
+                                <div v-show="errorIncome" class="form-group row div-error">
+                                    <div class="text-center text-error">
+                                        <div v-for="error in errorShowMsjIncome" :key="error" v-text="error">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group row-border">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Articulo</label>
+                                    <label for="">Articulo <span style="color:red;" v-show="article_id==0">(*)Seleccione</span></label>
                                     <div class="form-inline">
                                         <input type="text" class="form-control" v-model="code" @keyup.enter="searchArticle()" placeholder="Ingrese el ID del articulo">
                                         <input type="text" readonly class="form-control"v-model="article">
-                                        <button class="btn-primary btn">...</button>
+                                        <button class="btn-primary btn" @click="openModal()">...</button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Precio</label>
+                                    <label>Precio<span style="color:red;" v-show="price==0">(*)Ingrese</span></label>
                                     <input type="number" value="0" class="form-control" v-model="price" step="any">
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Cantidad</label>
+                                    <label>Cantidad<span style="color:red;" v-show="amount==0">(*)Ingrese</span></label>
                                     <input type="number" value="0" class="form-control" v-model="amount" step="any">
                                 </div>
                             </div>
@@ -176,6 +183,7 @@
                                 <div class="form-group">
                                     <button @click="addDetail()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
                                 </div>
+                            </div>
                             </div>
 
                             <div class="form-group row border">
@@ -191,10 +199,10 @@
                                             </tr>
                                         </thead>
                                         <tbody v-if="arrayDetail.length">
-                                            <tr v-for = "detail in arrayDetail" :key="detail.id">
+                                            <tr v-for = "(detail,index) in arrayDetail" :key="detail.id">
                                                 <td>
                                                     <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close"></i>
+                                                        <i class="icon-close" @click="deleteDetail(index)"></i>
                                                     </button>
                                                 </td>
                                                 <td v-text="detail.article">
@@ -215,15 +223,15 @@
 
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
-                                                <td>$5</td>  
+                                                <td>$ {{totalPartial=(total-totalTax).toFixed(2)}}</td>  
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
-                                                <td>$1</td>                                               
+                                                <td>$ {{totalTax=((total*tax)/(1+tax)).toFixed(2)}}</td>                                               
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" align="right"><strong>Total Neto:</strong></td>
-                                                <td>$5</td>
+                                                <td>$ {{total=totalCalculate}}</td>
                                                 
                                             </tr>
                                         </tbody>
@@ -249,7 +257,7 @@
                                 </div> 
                             </div>
                         </div>
-                    </div>
+                    
                     </template>
                     <!--Fin Detalle-->
                 </div>
@@ -266,7 +274,63 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" id="opcion" name="opcion" v-model="criteriaA">
+                                          <option value="nombre">Nombre</option>
+                                          <option value="descripcion">Descripción</option>
+                                          <option value="code">Codigo</option>
+                                        </select>
+                                        <input type="text" v-model="searchA" @keyup.enter="listArticle(searchA,criteriaA)" name="texto" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listArticle(searchA,criteriaA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                 <table class="table table-bordered table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Opciones</th>
+                                            <th>Codigo</th>
+                                            <th>Nombre</th>
+                                            <th>Categoria</th>
+                                            <th>Precio_Venta</th>
+                                            <th>Stock</th>
+                                            
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                            <tbody>
+                                <tr v-for="article in arrayArticle" :key="article.id">
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm"  @click="addDetailModal(article)">
+                                          <i class="icon-check"></i>
+                                        </button> 
+                                         
+                                    </td>
+                                    <td v-text="article.code"></td>
+                                    <td v-text="article.name"></td>
+                                    <td v-text="article.category_name"></td>
+                                    <td v-text="article.sale_price"></td>
+                                    <td v-text="article.stock"></td>
+                                    
+                                    <td>
+                                        <div v-if="article.status">
+                                            <span class="badge badge-success">Activo</span>
+                                        </div>
+                                        <div v-else>
+                                            <span class="badge badge-danger">Inactivo</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+
+
+
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
@@ -322,8 +386,12 @@ import vSelect from 'vue-select';
                     voucher_serie:'',
                     tax:0.18,
                     total:0.0,
+                    totalTax:0.0,
+                    totalPartial:0.0,
                     price:0,
                     article_id:0,
+                    searchA:'',
+                    criteriaA:'',
                     list:1,
                     arrayIncome:[],
                     arrayDetail:[],
@@ -393,6 +461,16 @@ import vSelect from 'vue-select';
                     return pagesArray;
 
 
+                },
+                totalCalculate: function()
+                {
+                    var result = 0.0;
+                    for(var i=0;i<this.arrayDetail.length;i++)
+                    {
+                        result=result+(this.arrayDetail[i].price*this.arrayDetail[i].amount);
+
+                    }
+                    return result;
                 }
             },
         methods: {
@@ -419,7 +497,7 @@ import vSelect from 'vue-select';
             {
                     let me = this;
                     loading(true)
-                    var url = '/supplier/selectSupplier?filter='+search;
+                    var url = '/proveedor/selectProveedor?filter='+search;
                     axios.get(url).then(function (response) {
                         let answer = response.data;
                         q: search
@@ -445,16 +523,111 @@ import vSelect from 'vue-select';
 
 
             },
+            listArticle(search, criteria)
+                {
+                let me = this;
+                        var url = '/articulo/listar?search='+ buscar + '&criteria='+ criterio;
+                        axios.get(url).then(function (response) {
+                            var answer = response.data;
+                            me.arrayArticle=answer.articles.data;
+                            
+                            
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                        .then(function () {
+                            // always executed
+                        });  
+
+                },
+
+            addDetailModal(data=[])
+            {
+                let me = this;
+                if(me.findArticle(data['id']))
+                    {
+                        swal({
+                            type:'error',
+                            title:'error',
+                            text:'El articulo ya esta registrado',
+                        })
+                    }else
+                    {
+                        me.arrayDetail.push({
+                        article_id: data['id'],
+                        article: data['name'],
+                        amount: 1,
+                        price: 1
+                        });
+                        
+
+
+                    }
+                    
+
+            },
+
+            findArticle(id)
+            {
+                var sw=0;
+                for(var i=0;i<this.arrayDetail.length;i++)
+                {
+                    if (this.arrayDetail[i].article_id==this.id) 
+                    {
+                        sw=true;
+                    }
+                }
+                return sw;
+
+            },
+            deleteDetail(index)
+            {
+                let me = this;
+                me.arrayDetail.splice(index, 1);
+
+            },
 
             addDetail()
             {
                 let me = this;
-                me.arrayDetail.push({
-                    article_id: me.article_id,
-                    article:me.article,
-                    amount:me.amount,
-                    price:me.price
-                });
+                if(me.article_id==0 || me.amount==0 || me.price==0)
+                {
+
+                }else{
+                    if(me.findArticle(me.article_id))
+                    {
+                        swal({
+                            type:'error',
+                            title:'error',
+                            text:'El articulo ya esta registrado',
+                        })
+                    }else
+                    {
+                        me.arrayDetail.push({
+                        article_id: me.article_id,
+                        article:me.article,
+                        amount:me.amount,
+                        price:me.price
+                        });
+                        me.code="",
+                        me.article_id=0;
+                        me.article="";
+                        me.amount=0;
+                        me.price=0;
+
+
+                    }
+                    
+
+                }
+
+
+
+
+
+               
 
             },
             searchArticle()
@@ -488,7 +661,19 @@ import vSelect from 'vue-select';
             },
             showDetail()
             {
-                this.list=0;
+                let me = this;
+                list=0;
+                me.supplier_id=0;
+                me.voucher_type='BOLETA';
+                me.voucher_serie='';
+                me.voucher_num='';
+                me.tax=0.18;
+                me.total=0.0;
+                me.article_id=0;
+                me.article='';
+                me.amount=0;
+                me.price=0;
+                me.arrayDetail=[];
 
             },
             hideDetail()
@@ -504,20 +689,32 @@ import vSelect from 'vue-select';
                     }
                 let me = this;
                  axios.post('/ingreso/registrar',{
-                    'name':this.name,
-                     'document_type':this.document_type,
-                     'document_num':this.document_num,
-                     'address':this.address,
-                     'phone':this.phone,
-                     'mail':this.mail,
-                     'user':this.user,
-                     'password':this.password,
-                     'rol_id':this.rol_id
+                    'supplier_id':'7',
+                    'voucher_type':this.voucher_type,
+                    'voucher_serie': this.voucher_serie,
+                    'voucher_num':this.voucher_num,
+                    'tax':this.tax,
+                    'total':this.total,
+                    'data':this.arrayDetail
+
 
 
                  }).then(function (response) {
-                      me.closeModal();
-                      me.listIncome('1','','name');
+                    me.list=1;
+                    me.listIncome(1,'','voucher_num');
+                    me.supplier_id=0;
+                    me.voucher_type='BOLETA';
+                    me.voucher_serie='';
+                    me.voucher_num='';
+                    me.tax=0.18;
+                    me.total=0.0;
+                    me.article_id=0;
+                    me.article='';
+                    me.amount=0;
+                    me.price=0;
+                    me.arrayDetail=[];
+
+
 
                     })
                     .catch(function (error) {
@@ -577,98 +774,29 @@ import vSelect from 'vue-select';
 
             validatePerson()
                 {
-                    this.errorPerson=0;
-                    this.errorShowMsjPerson=[];
-                    if(!this.name) this.errorShowMsjPerson.push("El nombre de la persona no puede estar vacio");
-                    if(!this.user) this.errorShowMsjPerson.push("El nombre de usuario no puede estar vacio");
-                    if(!this.password) this.errorShowMsjPerson.push("El password no puede estar vacio");
-                    if(this.rol_id==0) this.errorShowMsjPerson.push("Debes seleccionar un rol");
+                    this.errorIncome=0;
+                    this.errorShowMsjIncome=[];
+                   if(this.supplier_id==0) this.errorShowMsjIncome.push("Selecciona un Proveedor");
+                   if (this.voucher_type==0) this.errorShowMsjIncome.push("Selecciona el comprobante");
+                   if (!this.voucher_num==0) this.errorShowMsjIncome.push("Ingresa el numero del comprobante");
+                   if (!this.tax==0) this.errorShowMsjIncome.push("Ingresa el impuesto de compra");
+                   if (this.arrayDetail.length<=0) this.errorShowMsjIncome.push("Ingrese detalles");
 
-                    if(this.errorShowMsjPerson.length) this.errorPerson=1;
-                    return this.errorPerson;
+                    if(this.errorShowMsjIncome.length) this.errorPerson=1;
+                    return this.errorIncome;
 
                 },
-            openModal(model, action, data=[])
-            {
-                this.selectRol();
-                switch(model)
-                {
-                case "Person":
-                    {
-                        switch(action)
-                        {
-                            case 'register':
-                                {
-                                    this.errorPerson=0;
-                                    this.modal=1;
-                                    this.name='';
-                                    this.titleModal='Registrar Usuario';
-                                    this.user='';
-                                    this.password='';
-                                    this.rol_id=0;
-                                    this.description='';
-                                    this.typeAction=1;
-                                    this.document_type='DNI';
-                                    this.contactPhone='';
-                                    this.document_num='';
-                                    this.address='';
-                                    this.phone='';
-                                    this.mail='';
-                                    this.person_id;
-
-                                    break;
-
-
-                                }
-                            case 'update':
-                                {
-                                    this.errorPerson=0;
-                                    this.modal=1;
-                                    this.titleModal='Actualizar Usuario';
-                                    this.Person_id=data['id'];
-                                    this.name=data['name'];
-                                    this.document_type=data['document_type'];
-                                    this.address=data['address'];
-                                    this.phone=data['phone'];
-                                    this.rol_id=data['rol_id'];
-                                    this.user=data['user'];
-                                    this.password=data['password']
-                                    this.typeAction=2;
-                                    this.mail=data['mail'];
-                                    this.contactPhone=data['contact_phone'];
-                                    this.contact=data['contact'];
-                                    this.document_num=data['document_num'];
-
-
-                                    break;
-
-                                }
-                                
-                        }
-
-                    }
-                }
+            openModal()
+            {            
+                this.arrayArticle=[];
+                this.modal=1;
+                this.titleModal='Selecciona uno o varios articulos';  
 
             },
             closeModal()
             {
                 this.modal=0;
-                this.name='';
-                this.document_type='RUC';
-                this.document_num='';
-                this.address='';
                 this.titleModal='';
-                this.phone='';
-                this.mail='';
-                this.contact='';
-                this.contactPhone='';
-                this.errorPerson=0;
-                this.user='';
-                this.password='';
-                this.rol_id=0;
-                
-                                   
-
             },
 
 

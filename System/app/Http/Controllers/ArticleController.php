@@ -43,9 +43,37 @@ class ArticleController extends Controller
 
     }
 
+    public function listArticle(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $search=$request->search;
+        $criteria=$request->criteria;
+
+        if($search=='')
+        {
+            $articles=Article::join('categories','articles.categoryid','=','categories.id')
+            ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name',
+            'articles.sale_price','articles.stock','articles.description', 'articles.status')
+            ->orderBy('articles.id','desc')->paginate(10);
+        }else
+        {
+            $articles=Article::join('categories','articles.categoryid','=','categories.id')
+            ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name',
+            'articles.sale_price','articles.stock','articles.description', 'articles.status')
+            ->where('articles.'.$criteria, 'like', '%'. $search . '%')
+            ->orderBy('articles.id','desc')->paginate(10);
+        }
+
+        return [
+            'articles' => $articles
+        ];
+
+
+    }
+
     public function searchArticle(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+       if(!$request->ajax()) return redirect('/');
         $filter = $request->filter;
         $articles = Article::where('code','=',$filter)
         ->select('id','name')->orderBy('name', 'asc')->take(1)->get();
