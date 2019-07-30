@@ -10,9 +10,34 @@ use Carbon\Carbon;
 
 class EntryController extends Controller
 {
+     public function getHeader(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $income = Income::join('people','income.supplier_id','=','people.id')
+        ->join('users','income.user_id','=','users.id')
+        ->select('income.id','income.voucher_type','income.voucher_serie',
+        'income.voucher_num','income.date','income.tax','income.total',
+        'income.status','people.name','users.user')
+        ->where('income.id','=',$id)
+        ->orderBy('income.id', 'desc')->take(1)->get();
+        
+        return ['income' => $income];
+    }
+    public function getDetails(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $details = IncomeDetail::join('articles','income_detail.article_id','=','articles.id')
+        ->select('income_detail.amount','income_detail.price','articles.name as article')
+        ->where('income_detail.entry_id','=',$id)
+        ->orderBy('income_detail.id', 'desc')->get();
+        
+        return ['details' => $details];
+    }
      public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         
         $search=$request->search;
         $criteria=$request->criteria;
@@ -52,7 +77,7 @@ class EntryController extends Controller
     public function store(Request $request)
     {
 
-       // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         try
         {
             DB::beginTransaction();

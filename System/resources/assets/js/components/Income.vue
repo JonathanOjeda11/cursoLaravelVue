@@ -14,7 +14,7 @@
                         </button>
                     </div>
                     <!--Listado-->
-                    <template v-if="list">
+                    <template v-if="list==1">
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
@@ -52,7 +52,7 @@
                             <tbody>
                                 <tr v-for="income in arrayIncome" :key="income.id">
                                     <td>
-                                        <button type="button" class="btn btn-success btn-sm"  @click="openModal('income','update',income)">
+                                        <button type="button" @click="watchIncome(income.id)" class="btn btn-success btn-sm">
                                           <i class="icon-eye"></i>
                                         </button>
                                         <template v-if="income.status == 'Registrado'">
@@ -93,7 +93,7 @@
                     </template>
                     <!--Fin Listado-->
                     <!--Detalle-->
-                    <template >
+                    <template v-else-if="list==0">
                     <div class="card-body">
                         <div class="form-group row-border">
                             <div class="col-md-9">
@@ -157,8 +157,8 @@
                                     <label for="">Articulo <span style="color:red;" v-show="article_id==0">(*)Seleccione</span></label>
                                     <div class="form-inline">
                                         <input type="text" class="form-control" v-model="code" @keyup.enter="searchArticle()" placeholder="Ingrese el ID del articulo">
-                                        <input type="text" readonly class="form-control"v-model="article">
                                         <button class="btn-primary btn" @click="openModal()">...</button>
+                                        <input type="text" readonly class="form-control" v-model="article">
                                     </div>
                                 </div>
                             </div>
@@ -199,10 +199,10 @@
                                             </tr>
                                         </thead>
                                         <tbody v-if="arrayDetail.length">
-                                            <tr v-for = "(detail,index) in arrayDetail" :key="detail.id">
+                                            <tr v-for ="(detail,index) in arrayDetail" :key="detail.id">
                                                 <td>
-                                                    <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close" @click="deleteDetail(index)"></i>
+                                                    <button type="button" class="btn btn-danger btn-sm" @click="deleteDetail(index)">
+                                                        <i class="icon-close"></i>
                                                     </button>
                                                 </td>
                                                 <td v-text="detail.article">
@@ -252,14 +252,102 @@
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-secondary" @click="hideDetail()">Cerrar</button>
                                     <button type="button" class="btn btn-primary" @click="registerIncome()">Registrar compra</button>
-                                    
-
                                 </div> 
                             </div>
                         </div>
-                    
                     </template>
                     <!--Fin Detalle-->
+                    <!-- Ver ingreso -->
+                    <template v-else-if="list==2">
+                    <div class="card-body">
+                        <div class="form-group row border">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="">Proveedor</label>
+                                    <p v-text="supplier"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Impuesto</label>
+                                <p v-text="tax"></p>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante</label>
+                                    <p v-text="voucher_type"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Serie Comprobante</label>
+                                    <p v-text="voucher_serie"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Número Comprobante</label>
+                                    <p v-text="voucher_num"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row border">
+                            <div class="table-responsive col-md-12">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Artículo</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-if="arrayDetail.length">
+                                        <tr v-for="detail in arrayDetail" :key="detail.id">
+                                            <td v-text="detail.articulo">
+                                            </td>
+                                            <td v-text="detail.precio">
+                                            </td>
+                                            <td v-text="detail.cantidad">
+                                            </td>
+                                            <td>
+                                                {{detail.precio*detail.cantidad}}
+                                            </td>
+                                        </tr>
+                                        <tr style="background-color: #CEECF5;">
+                                            <td colspan="3" align="right"><strong>Total Parcial:</strong></td>
+                                            <td>$ {{totalPartial=(total-totalTax).toFixed(2)}}</td>
+                                        </tr>
+                                        <tr style="background-color: #CEECF5;">
+                                            <td colspan="3" align="right"><strong>Total Impuesto:</strong></td>
+                                            <td>$ {{totalTax=((total*tax)).toFixed(2)}}</td>
+                                        </tr>
+                                        <tr style="background-color: #CEECF5;">
+                                            <td colspan="3" align="right"><strong>Total Neto:</strong></td>
+                                            <td>$ {{total}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody v-else>
+                                        <tr>
+                                            <td colspan="4">
+                                                NO hay artículos agregados
+                                            </td>
+                                        </tr>
+                                    </tbody>                                    
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <button type="button" @click="hideDetail()" class="btn btn-secondary">Cerrar</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    </template>
+                    <!-- fin ver ingreso -->
+
+
+
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -296,8 +384,7 @@
                                             <th>Nombre</th>
                                             <th>Categoria</th>
                                             <th>Precio_Venta</th>
-                                            <th>Stock</th>
-                                            
+                                            <th>Stock</th>                                            
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
@@ -344,29 +431,7 @@
                 <!-- /.modal-dialog -->
             </div>
             <!--Fin del modal-->
-            <!-- Inicio del modal Eliminar -->
-            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog modal-danger" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Eliminar Categoría</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Estas seguro de eliminar la categoría?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-danger">Eliminar</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- Fin del modal Eliminar -->
+           
         </main>
 </template>
 
@@ -380,6 +445,7 @@ import vSelect from 'vue-select';
 
                     income_id:0,
                     supplier_id:0,
+                    supplier:'',
                     name:'',
                     voucher_type:'BOLETA',
                     voucher_num:'',
@@ -391,7 +457,7 @@ import vSelect from 'vue-select';
                     price:0,
                     article_id:0,
                     searchA:'',
-                    criteriaA:'',
+                    criteriaA:'name',
                     list:1,
                     arrayIncome:[],
                     arrayDetail:[],
@@ -476,7 +542,7 @@ import vSelect from 'vue-select';
         methods: {
             listIncome(page, search, criteria)
             {
-               let me = this;
+                    let me = this;
                     var url = '/ingreso?page='+page+'&search='+search+'&criteria='+criteria;
                     axios.get(url).then(function (response) {
                         var answer = response.data;
@@ -501,7 +567,7 @@ import vSelect from 'vue-select';
                     axios.get(url).then(function (response) {
                         let answer = response.data;
                         q: search
-                        me.arraySupplier=answer.supplier;
+                        me.arraySupplier=answer.suppliers;
                         loading(false)
                         
 
@@ -681,15 +747,50 @@ import vSelect from 'vue-select';
                 this.list=1;
 
             },
+             watchIncome(id){
+                let me=this;
+                me.listado=2;
+                
+                //Obtener los datos del ingreso
+                var arrayIncomeT=[];
+                var url= '/ingreso/obtenerCabecera?id=' + id;
+                
+                axios.get(url).then(function (response) {
+                    var answer= response.data;
+                    arrayIncomeT = answer.income;
+
+                    me.supplier = arrayIncomeT[0]['name'];
+                    me.voucher_type=arrayIncomeT[0]['voucher_type'];
+                    me.voucher_serie=arrayIncomeT[0]['voucher_serie'];
+                    me.voucher_num=arrayIncomeT[0]['voucher_num'];
+                    me.tax=arrayIncomeT[0]['tax'];
+                    me.total=arrayIncomeT[0]['total'];
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                //Obtener los datos de los detalles 
+                var urld= '/ingreso/obtenerDetalles?id=' + id;
+                
+                axios.get(urld).then(function (response) {
+                    console.log(response);
+                    var answer= response.data;
+                    me.arrayDetail = answer.details;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });               
+            },
             registerIncome()
             {
-                if(this.validatePerson())
+                if(this.validateIncome())
                     {
                         return;
                     }
                 let me = this;
                  axios.post('/ingreso/registrar',{
-                    'supplier_id':'7',
+                    'supplier_id':this.supplier_id,
                     'voucher_type':this.voucher_type,
                     'voucher_serie': this.voucher_serie,
                     'voucher_num':this.voucher_num,
@@ -737,7 +838,7 @@ import vSelect from 'vue-select';
                 },
             updatePerson()
                 {
-                    if(this.validatePerson())
+                    if(this.validateIncome())
                         {
                         return;
                         }
@@ -772,7 +873,7 @@ import vSelect from 'vue-select';
 
 
 
-            validatePerson()
+            validateIncome()
                 {
                     this.errorIncome=0;
                     this.errorShowMsjIncome=[];
@@ -800,7 +901,7 @@ import vSelect from 'vue-select';
             },
 
 
-               disableUser(id)
+               disableIncome(id)
                 {
                     const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -821,68 +922,15 @@ import vSelect from 'vue-select';
                     }).then((result) => {
                     if (result.value) {
                         let me=this;
-                        axios.put('/user/desactivar',{
+                        axios.put('/ingreso/desactivar',{
                             'id':id
                             }).then(function (response) {
                                 swalWithBootstrapButtons.fire(
                                 'Deleted!',
-                                'Your file has been deleted.',
+                                'Your income has been deleted.',
                                 'success'
                                 )
-                            me.listIncome('1','','name');
-                            })
-                            .catch(function (error) {
-                            console.log(error);
-                            })
-                            .then(function () {
-                            // always executed
-                            });  
-                    
-
-                    
-                    } else if (
-                        // Read more about handling dismissals
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your imaginary file is safe :)',
-                        'error'
-                        )
-                    }
-                    })
-                },
-
-                enableUser(id)
-                {
-                    const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false,
-                    })
-
-                    swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, activate it!',
-                    cancelButtonText: 'No, cancel!',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-                        let me=this;
-                        axios.put('/user/activar',{
-                            'id':id
-                            }).then(function (response) {
-                                swalWithBootstrapButtons.fire(
-                                'Added!',
-                                'Your file has been added.',
-                                'success'
-                                )
-                            me.listIncome('1','','name');
+                            me.listIncome('1','','voucher_num');
                             })
                             .catch(function (error) {
                             console.log(error);

@@ -49,6 +49,9 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/ingreso','EntryController@index');
 		Route::post('/ingreso/registrar','EntryController@store');
 		Route::get('/ingreso/desactivar','EntryController@desactivate');
+		Route::get('/ingreso/obtenerCabecera', 'EntryController@getHeader');
+        Route::get('/ingreso/obtenerDetalles', 'EntryController@getDetails');
+		
 
 
 	 });
@@ -85,6 +88,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/ingreso','EntryController@index');
 		Route::get('/ingreso/registrar','EntryController@store');
 		Route::get('/ingreso/desactivar','EntryController@desactivate');
+		Route::get('/ingreso/obtenerCabecera', 'EntryController@getHeader');
+        Route::get('/ingreso/obtenerDetalles', 'EntryController@getDetails');
 
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
