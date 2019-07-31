@@ -61192,7 +61192,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         watchIncome: function watchIncome(id) {
             var me = this;
-            me.listado = 2;
+            me.list = 0;
 
             //Obtener los datos del ingreso
             var arrayIncomeT = [];

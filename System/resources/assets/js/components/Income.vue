@@ -749,7 +749,7 @@ import vSelect from 'vue-select';
             },
              watchIncome(id){
                 let me=this;
-                me.listado=2;
+                me.list=0;
                 
                 //Obtener los datos del ingreso
                 var arrayIncomeT=[];
