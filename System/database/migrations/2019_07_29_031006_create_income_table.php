@@ -13,7 +13,7 @@ class CreateIncomeTable extends Migration
      */
     public function up()
     {
-        Schema::create('income', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('supplier_id')->unsigned();
             $table->foreign('supplier_id')->references('id')->on('suppliers');

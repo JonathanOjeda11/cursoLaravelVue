@@ -14,24 +14,24 @@ class EntryController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
-        $income = Income::join('people','income.supplier_id','=','people.id')
-        ->join('users','income.user_id','=','users.id')
-        ->select('income.id','income.voucher_type','income.voucher_serie',
-        'income.voucher_num','income.date','income.tax','income.total',
-        'income.status','people.name','users.user')
-        ->where('income.id','=',$id)
-        ->orderBy('income.id', 'desc')->take(1)->get();
+        $income = Income::join('people','incomes.supplier_id','=','people.id')
+        ->join('users','incomes.user_id','=','users.id')
+        ->select('incomes.id','incomes.voucher_type','incomes.voucher_serie',
+        'incomes.voucher_num','incomes.date','incomes.tax','incomes.total',
+        'incomes.status','people.name','users.user')
+        ->where('incomes.id','=',$id)
+        ->orderBy('incomes.id', 'desc')->take(1)->get();
         
-        return ['income' => $income];
+        return ['incomes' => $income];
     }
     public function getDetails(Request $request){
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
-        $details = IncomeDetail::join('articles','income_detail.article_id','=','articles.id')
-        ->select('income_detail.amount','income_detail.price','articles.name as article')
-        ->where('income_detail.entry_id','=',$id)
-        ->orderBy('income_detail.id', 'desc')->get();
+        $details = IncomeDetail::join('articles','income_details.article_id','=','articles.id')
+        ->select('income_details.amount','income_details.price','articles.name as article')
+        ->where('income_details.entry_id','=',$id)
+        ->orderBy('income_details.id', 'desc')->get();
         
         return ['details' => $details];
     }
@@ -44,18 +44,18 @@ class EntryController extends Controller
 
         if($search=='')
         {
-            $income=Income::join('people','income.supplier_id','=','people.id')
-            ->join('users','income.user_id', '=', 'users.id')
-            ->select('income.id','income.voucher_type','income.voucher_serie','income.voucher_num','income.date','income.tax',
-            'income.total','income.status','people.name','users.user')
-            ->orderBy('income.id','desc')->paginate(3);
+            $income=Income::join('people','incomes.supplier_id','=','people.id')
+            ->join('users','incomes.user_id', '=', 'users.id')
+            ->select('incomes.id','incomes.voucher_type','incomes.voucher_serie','incomes.voucher_num','incomes.date','incomes.tax',
+            'incomes.total','incomes.status','people.name','users.user')
+            ->orderBy('incomes.id','desc')->paginate(3);
         }else
         {
-        	$income=Income::join('people','income.supplier_id','=','people.id')
-        	->join('users','income.user_id', '=', 'users.id')
-            ->select('income.id','income.voucher_type','income.voucher_serie','income.voucher_num','income.date','income.tax','income.total','income.status','people.name','users.user')
-            ->where('income.'.$criteria, 'like', '%'. $search . '%')
-            ->orderBy('income.id','desc')->paginate(3);
+        	$income=Income::join('people','incomes.supplier_id','=','people.id')
+        	->join('users','incomes.user_id', '=', 'users.id')
+            ->select('incomes.id','incomes.voucher_type','incomes.voucher_serie','incomes.voucher_num','incomes.date','incomes.tax','incomes.total','incomes.status','people.name','users.user')
+            ->where('incomes.'.$criteria, 'like', '%'. $search . '%')
+            ->orderBy('incomes.id','desc')->paginate(3);
         }
 
         return [

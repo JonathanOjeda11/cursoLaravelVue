@@ -13,7 +13,7 @@ class CreateIncomeDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('income_detail', function (Blueprint $table) {
+        Schema::create('income_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entry_id')->unsigned();
             $table->foreign('entry_id')->references('id')->on('income')->onDelete('cascade');
