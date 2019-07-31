@@ -22,6 +22,8 @@ Vue.component('Supplier', require('./components/Supplier.vue'));
 Vue.component('Rol', require('./components/Rol.vue'));
 Vue.component('User', require('./components/User.vue'));
 Vue.component('Income', require('./components/Income.vue'));
+Vue.component('Sale', require('./components/Sale.vue'));
+
 const app = new Vue({
     el: '#app',
     data:{

@@ -40,6 +40,11 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::put('/articulo/activar','ArticleController@activate');
 		Route::get('/articulo/buscarArticulo','ArticleController@searchArticle');
 		Route::get('/articulo/listar', 'ArticleController@listArticle');
+		
+		Route::get('/articulo/buscarArticuloVenta', 'ArticleController@searchArticleSale');
+        Route::get('/articulo/listarArticuloVenta', 'ArticleController@listArticleSale');
+
+
 
 		Route::get('/proveedor', 'SupplierController@index');
 		Route::post('/proveedor/registrar','SupplierController@store');
@@ -62,6 +67,12 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
 		Route::put('/cliente/actualizar','ClientController@update');
+		Route::get('/cliente/selectCliente', 'ClientController@selectClient');
+
+		Route::get('/articulo/buscarArticuloVenta', 'ArticleController@searchArticleSale');
+        Route::get('/articulo/listarArticuloVenta', 'ArticleController@listArticleSale');
+
+
 
 		Route::get('/ventas','SalesController@index');
 		Route::post('/ventas/registrar','SalesController@store');
@@ -86,6 +97,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::put('/articulo/desactivar','ArticleController@desactivate');
 		Route::put('/articulo/activar','ArticleController@activate');
 		Route::get('/articulo/buscarArticulo','ArticleController@searchArticle');
+		Route::get('/articulo/listar', 'ArticleController@listArticle');
+
 
 		Route::get('/proveedor', 'SupplierController@index');
 		Route::post('/proveedor/registrar','SupplierController@store');
@@ -102,6 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
 		Route::put('/cliente/actualizar','ClientController@update');
+		Route::get('/cliente/selectCliente', 'ClientController@selectClient');
 
 		Route::get('/rol','RolController@index');
 		Route::get('/rol/selectRol','RolController@selectRol');

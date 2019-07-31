@@ -22,7 +22,7 @@
                     <Supplier></Supplier>
                 </template>
                 <template v-if="menu==5">
-                    <h1>Ventas</h1>
+                    <Sale></Sale>
                 </template>
                 <template v-if="menu==6">
                     <Client></Client>
@@ -51,7 +51,7 @@
      
             @elseif(Auth::user()->rol_id==2)
                 <template v-if="menu==5">
-                    <h1>Ventas</h1>
+                    <Sale></Sale>
                 </template>
                 <template v-if="menu==6">
                     <Client></Client>
