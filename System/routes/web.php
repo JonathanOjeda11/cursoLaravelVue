@@ -98,6 +98,9 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::put('/articulo/activar','ArticleController@activate');
 		Route::get('/articulo/buscarArticulo','ArticleController@searchArticle');
 		Route::get('/articulo/listar', 'ArticleController@listArticle');
+		
+		Route::get('/articulo/buscarArticuloVenta', 'ArticleController@searchArticleSale');
+        Route::get('/articulo/listarArticuloVenta', 'ArticleController@listArticleSale');
 
 
 		Route::get('/proveedor', 'SupplierController@index');

@@ -127,4 +127,45 @@ class ArticleController extends Controller
         $article->save();
     }
 
+
+    public function listArticleSale(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $search = $request->search;
+        $criteria = $request->criteria;
+        
+        if ($search==''){
+            $articles = Article::join('categories','articles.categoryid','=','categories.id')
+            ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name','articles.sale_price','articles.stock','articles.description','articles.status')
+            ->where('articles.stock','>','0')
+            ->orderBy('articles.id', 'desc')->paginate(10);
+        }
+        else{
+            $articles = Article::join('categories','articles.categoryid','=','categories.id')
+            ->select('articles.id','articles.categoryid','articles.code','articles.name','categories.name as category_name','articles.sale_price','articles.stock','articles.description','articles.status')
+            ->where('articles.'.$criteria, 'like', '%'. $search . '%')
+            ->where('articles.stock','>','0')
+            ->orderBy('articles.id', 'desc')->paginate(10);
+        }
+        
+
+        return ['articles' => $articles];
+    }
+
+
+    public function searchArticleSale(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $filter = $request->filter;
+        $articles = Article::where('code','=', $filter)
+        ->select('id','name','stock','sale_price')
+        ->where('stock','>','0')
+        ->orderBy('name', 'asc')
+        ->take(1)->get();
+
+        return ['articles' => $articles];
+    }
+
+
 }

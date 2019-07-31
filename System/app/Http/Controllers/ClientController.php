@@ -53,6 +53,20 @@ class ClientController extends Controller
         $person->save();
     }
 
+
+    public function selectClient(Request $request){
+        //if (!$request->ajax()) return redirect('/');
+
+        $filter = $request->filter;
+        $clients = Person::where('name', 'like', '%'. $filter . '%')
+        ->orWhere('document_num', 'like', '%'. $filter . '%')
+        ->select('id','name','document_num')
+        ->orderBy('name', 'asc')->get();
+
+        return ['clients' => $clients];
+    }
+
+
    
 
 }

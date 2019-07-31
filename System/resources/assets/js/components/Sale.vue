@@ -95,7 +95,7 @@
                                     <label for="">Cliente(*)</label>
                                     <v-select
                                         :on-search="selectClient"
-                                        label="nombre"
+                                        label="name"
                                         :options="arrayClient"
                                         placeholder="Buscar Clientes..."
                                         :onChange="getDataClient"                                        
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div v-show="errorVenta" class="form-group row div-error">
+                                <div v-show="errorSale" class="form-group row div-error">
                                     <div class="text-center text-error">
                                         <div v-for="error in errorShowMsjSale" :key="error" v-text="error">
 
@@ -310,7 +310,7 @@
                                         </tr>
                                         <tr style="background-color: #CEECF5;">
                                             <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
-                                            <td>$ {{totalTax=((total*Tax)).toFixed(2)}}</td>
+                                            <td>$ {{totalTax=((total*tax)).toFixed(2)}}</td>
                                         </tr>
                                         <tr style="background-color: #CEECF5;">
                                             <td colspan="4" align="right"><strong>Total Neto:</strong></td>
@@ -565,7 +565,7 @@
                 //Envia la petición para visualizar la data de esa página
                 me.listSale(page,search,criteria);
             },
-            search(id){
+            searchD(id){
                 var sw=0;
                 for(var i=0;i<this.arrayDetail.length;i++){
                     if(this.arrayDetail[i].article_id==id){
@@ -583,7 +583,7 @@
                 if(me.article_id==0 || me.amount==0 || me.price==0){
                 }
                 else{
-                    if(me.search(me.article_id)){
+                    if(me.searchD(me.article_id)){
                         swal({
                             type: 'error',
                             title: 'Error...',
@@ -624,7 +624,7 @@
             },
             addDetailModal(data =[]){
                 let me=this;
-                if(me.search(data['id'])){
+                if(me.searchD(data['id'])){
                         swal({
                             type: 'error',
                             title: 'Error...',
@@ -660,7 +660,7 @@
                 
                 let me = this;
 
-                axios.post('/venta/registrar',{
+                axios.post('/ventas/registrar',{
                     'client_id': this.client_id,
                     'voucher_type': this.voucher_type,
                     'voucher_serie' : this.voucher_serie,
@@ -739,7 +739,7 @@
                 
                 //Obtener los datos del ingreso
                 var arraySaleT=[];
-                var url= '/venta/obtenerCabecera?id=' + id;
+                var url= '/ventas/obtenerCabecera?id=' + id;
                 
                 axios.get(url).then(function (response) {
                     var answer= response.data;
@@ -757,7 +757,7 @@
                 });
 
                 //Obtener los datos de los detalles 
-                var urld= '/venta/obtenerDetalles?id=' + id;
+                var urld= '/ventas/obtenerDetalles?id=' + id;
                 
                 axios.get(urld).then(function (response) {
                     console.log(response);

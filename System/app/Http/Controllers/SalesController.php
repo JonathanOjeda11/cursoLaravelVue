@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sale;
-use App\SalDetail;
-use Carbon\Carbon,
+use App\SaleDetail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class SalesController extends Controller
 {
     
@@ -45,7 +46,7 @@ class SalesController extends Controller
             ],
             'sales' => $sales
         ];
-    }
+        }
     public function getHeader(Request $request){
         if (!$request->ajax()) return redirect('/');
 
@@ -64,11 +65,11 @@ class SalesController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
-        $details = SaleDetail::join('articles','sale_detail.article_id','=','articles.id')
-        ->select('sale_detail.amount','sale_detail.price','sale_detail.discount',
+        $details = SaleDetail::join('articles','sales_detail.article_id','=','articles.id')
+        ->select('sales_detail.amount','sales_detail.price','sales_detail.discount',
         'articles.name as article')
-        ->where('sale_detail.sales_id','=',$id)
-        ->orderBy('sale_detail.id', 'desc')->get();
+        ->where('sales_detail.sales_id','=',$id)
+        ->orderBy('sales_detail.id', 'desc')->get();
         
         return ['details' => $details];
     }
@@ -99,13 +100,13 @@ class SalesController extends Controller
 
             foreach($details as $ep=>$det)
             {
-                $detalle = new DetalleVenta();
-                $detalle->sale_id = $sale->id;
-                $detalle->article_id = $det['article_id'];
-                $detalle->amount = $det['amount'];
-                $detalle->price = $det['price'];
-                $detalle->discount = $det['discount'];         
-                $detalle->save();
+                $detail = new SaleDetail();
+                $detail->sales_id = $sale->id;
+                $detail->article_id = $det['article_id'];
+                $detail->amount = $det['amount'];
+                $detail->price = $det['price'];
+                $detail->discount = $det['discount'];         
+                $detail->save();
             }          
 
             DB::commit();
