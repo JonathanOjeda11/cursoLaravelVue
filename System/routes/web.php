@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/ingreso/desactivar','EntryController@desactivate');
 		Route::get('/ingreso/obtenerCabecera', 'EntryController@getHeader');
         Route::get('/ingreso/obtenerDetalles', 'EntryController@getDetails');
+
+
 		
 
 
@@ -60,6 +62,12 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/cliente', 'ClientController@index');
 		Route::post('/cliente/registrar','ClientController@store');
 		Route::put('/cliente/actualizar','ClientController@update');
+
+		Route::get('/ventas','SalesController@index');
+		Route::post('/ventas/registrar','SalesController@store');
+		Route::get('/ventas/desactivar','SalesController@desactivate');
+		Route::get('/ventas/obtenerCabecera', 'SalesController@getHeader');
+        Route::get('/ventas/obtenerDetalles', 'SalesController@getDetails');
  
 	 });
 
@@ -104,7 +112,11 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::put('/user/desactivar','UserController@desactivate');
 		Route::put('/user/activar','UserController@activate');
 
-		Route::get('/ingreso','EntryController@index');
+		Route::get('/ventas','SalesController@index');
+		Route::post('/ventas/registrar','SalesController@store');
+		Route::get('/ventas/desactivar','SalesController@desactivate');
+		Route::get('/ventas/obtenerCabecera', 'SalesController@getHeader');
+        Route::get('/ventas/obtenerDetalles', 'SalesController@getDetails');
 
 
   });
