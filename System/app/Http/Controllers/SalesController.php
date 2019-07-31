@@ -32,28 +32,8 @@ class SalesController extends Controller
         return $pdf->download('sale-'.$saleNum[0]->voucher_num.'.pdf');
     }
 
-    // public function pdfTicket(Request $request,$id){
-    //     $sale = Sale::join('personas','sales.idcliente','=','personas.id')
-    //     ->join('users','sales.idusuario','=','users.id')
-    //     ->select('sales.id','sales.tipo_comprobante','sales.serie_comprobante',
-    //     'sales.num_comprobante','sales.created_at','sales.impuesto','sales.total',
-    //     'sales.estado','personas.nombre','personas.tipo_documento','personas.num_documento',
-    //     'personas.direccion','personas.email',
-    //     'personas.telefono','users.usuario')
-    //     ->where('sales.id','=',$id)
-    //     ->orderBy('sales.id', 'desc')->take(1)->get();
-
-    //     $detalles = DetalleVenta::join('articulos','detalle_ventas.idarticulo','=','articulos.id')
-    //     ->select('detalle_ventas.cantidad','detalle_ventas.precio','detalle_ventas.descuento',
-    //     'articulos.nombre as articulo')
-    //     ->where('detalle_ventas.idventa','=',$id)
-    //     ->orderBy('detalle_ventas.id', 'desc')->get();
-
-    //     $numventa=Sale::select('num_comprobante')->where('id',$id)->get();
-
-    //     $pdf = \PDF::loadView('pdf.ventaticket',['sale'=>$venta,'detalles'=>$detalles]);
-    //     return $pdf->download('ventaTicket-'.$numventa[0]->num_comprobante.'.pdf');
-    // }
+    
+    
 
 
 
