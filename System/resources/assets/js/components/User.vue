@@ -10,8 +10,8 @@
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Categorías
-                        <button type="button" class="btn btn-secondary" @click="openModal('category','register')">
+                        <i class="fa fa-align-justify"></i> Proveedor
+                        <button type="button" class="btn btn-secondary" @click="openModal('Person','register')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -19,12 +19,15 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <select class="form-control col-md-3" id="opcion" name="opcion">
-                                      <option value="nombre">Nombre</option>
-                                      <option value="descripcion">Descripción</option>
+                                    <select class="form-control col-md-3" v-model="criteria">
+                                      <option value="name">Nombre</option>
+                                      <option value="document_num">Documento</option>
+                                      <option value="mail">Email</option>
+                                      <option value="phone">Telefono</option>
+                                      <option value="document_num">Documento</option>
                                     </select>
-                                    <input type="text" v-model="search" @keyup.enter="listCategory(1,search,criteria)" name="texto" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" @click="listCategory(1,search,criteria)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" v-model="search" @keyup.enter="listPerson(1,search,criteria)" name="texto" class="form-control" placeholder="Texto a buscar">
+                                    <button type="submit" @click="listPerson(1,search,criteria)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -33,37 +36,41 @@
                                 <tr>
                                     <th>Opciones</th>
                                     <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
+                                    <th>Tipo Documento</th>
+                                    <th>Numero</th>
+                                    <th>Direccion</th>
+                                    <th>Telefono</th>
+                                    <th>Email</th>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="category in arrayCategory" :key="category.id">
+                                <tr v-for="Person in arrayPerson" :key="Person.id">
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm"  @click="openModal('category','update',category)">
+                                        <button type="button" class="btn btn-warning btn-sm"  @click="openModal('Person','update',Person)">
                                           <i class="icon-pencil"></i>
-                                        </button> &nbsp;
-                                        <template v-if="category.status">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="disableCategory(category.id)">
+                                        </button>
+                                        <template v-if="Person.status">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="disableUser(Person.id)">
                                                 <i class="icon-trash"></i>                                         
                                             </button>
                                         </template>
                                          <template v-else>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="enableCategory(category.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="enableUser(Person.id)">
                                                 <i class="icon-check"></i>                                         
                                             </button>
                                         </template>
                                     </td>
-                                    <td v-text="category.name"></td>
-                                    <td v-text="category.description"></td>
-                                    <td>
-                                        <div v-if="category.status">
-                                            <span class="badge badge-success">Activo</span>
-                                        </div>
-                                        <div v-else>
-                                            <span class="badge badge-danger">Inactivo</span>
-                                        </div>
-                                    </td>
+                                    <td v-text="Person.name"></td>
+                                    <td v-text="Person.document_type"></td>
+                                    <td v-text="Person.document_num"></td>
+                                    <td v-text="Person.address"></td>
+                                    <td v-text="Person.phone"></td>
+                                    <td v-text="Person.mail"></td>
+                                    <td v-text="Person.user"></td>
+                                    <td v-text="Person.rol"></td>
                                 </tr>
                                
                             </tbody>
@@ -100,19 +107,88 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="name" name="nombre" class="form-control" placeholder="Nombre de categoría">
+                                        <input type="text" v-model="name" class="form-control" placeholder="Nombre de la persona">
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
+                                    <label class="col-md-3 form-control-label" for="email-input">Tipo Documento</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="description" name="descripcion" class="form-control" placeholder="Ingrese descripcion">
+                                       <select v-model="document_type">
+                                           <option value="DNI">DNI</option>
+                                           <option value="RUC">RUC</option>
+                                           <option value="PASS">PASS</option>
+                                       </select>
+
+
                                     </div>
-                                </div>
-                                 <div v-show="errorCategory" class="form-group row div-error">
+                                    </div>
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Numero de documento</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="document_num" class="form-control" placeholder="Numero de documento">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                     <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Direccion</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="address" class="form-control" placeholder="Direccion">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                     <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Telefono</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="phone" class="form-control" placeholder="Telefono">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" v-model="mail" class="form-control" placeholder="Email">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Rol (*)</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" v-model="rol_id">
+                                            <option value="0">Seleccione un rol</option>
+                                            <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.name">
+
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Usuario (*)</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="user" class="form-control" placeholder="Nombre del Usuario">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Password (*)</label>
+                                    <div class="col-md-9">
+                                        <input type="password" v-model="password" class="form-control" placeholder="Ingrese el password">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    </div>
+                                
+                                 <div v-show="errorPerson" class="form-group row div-error">
                                     <div class="text-center text-error">
-                                        <div v-for="error in errorShowMsjCategory" :key="error" v-text="error">
+                                        <div v-for="error in errorShowMsjPerson" :key="error" v-text="error">
 
                                         </div>
 
@@ -125,8 +201,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" v-if="typeAction==1" class="btn btn-primary" @click="registerCategory()" >Guardar</button>
-                            <button type="button" v-if="typeAction==2" class="btn btn-primary" @click="updateCategory()">Actualizar</button>
+                            <button type="button" v-if="typeAction==1" class="btn btn-primary" @click="registerPerson()" >Guardar</button>
+                            <button type="button" v-if="typeAction==2" class="btn btn-primary" @click="updatePerson()">Actualizar</button>
 
                         </div>
                     </div>
@@ -166,15 +242,26 @@
          data()
             {
                 return {
-                    category_id:0,
+
+                    person_id:0,
                     name:'',
-                    description:'',
-                    arrayCategory:[],
+                    document_type:'DNI',
+                    document_num:'',
+                    address:'',
+                    phone:'',
+                    mail:'',   
+                    user:'',
+                    password:'',
+                    rol_id:0,    
+                    arrayPerson:[],
+                    arrayRol:[],
                     modal:0,
                     titleModal:'',
                     typeAction:0,
-                    errorCategory:0,
-                    errorShowMsjCategory:[],
+                    errorPerson:0,
+                    contact:'',
+                    contactPhone:'',
+                    errorShowMsjPerson:[],
                     pagination: {
                         'total':0,
                         'current_page':0, 
@@ -224,13 +311,13 @@
                 }
             },
         methods: {
-            listCategory(page, search, criteria)
+            listPerson(page, search, criteria)
             {
                let me = this;
-                    var url = '/categoria?page='+page+'&search='+search+'&criteria='+criteria;
+                    var url = '/user?page='+page+'&search='+search+'&criteria='+criteria;
                     axios.get(url).then(function (response) {
                         var answer = response.data;
-                        me.arrayCategory=answer.categories.data
+                        me.arrayPerson=answer.person.data
                         me.pagination=answer.pagination;
                         
 
@@ -243,20 +330,46 @@
                     });  
 
             },
-            registerCategory()
+            selectRol()
             {
-                if(this.validateCategory())
+                    let me = this;
+                    var url = '/rol/selectRol';
+                    axios.get(url).then(function (response) {
+                        var answer = response.data;
+                        me.arrayRol=answer.roles
+                        
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });  
+
+            },
+            registerPerson()
+            {
+                if(this.validatePerson())
                     {
                         return;
                     }
                 let me = this;
-                 axios.post('/categoria/registrar',{
-                     'name':this.name,
-                     'description':this.description
+                 axios.post('/user/registrar',{
+                    'name':this.name,
+                     'document_type':this.document_type,
+                     'document_num':this.document_num,
+                     'address':this.address,
+                     'phone':this.phone,
+                     'mail':this.mail,
+                     'user':this.user,
+                     'password':this.password,
+                     'rol_id':this.rol_id
+
 
                  }).then(function (response) {
                       me.closeModal();
-                      me.listCategory('1','','name');
+                      me.listPerson('1','','name');
 
                     })
                     .catch(function (error) {
@@ -274,23 +387,31 @@
                     //Actualiza la pagina actual
                     me.pagination.current_page=page;
                     //Envia la peticion para mandar la pagina
-                    me.listCategory(page, search, criteria);
+                    me.listPerson(page, search, criteria);
 
                 },
-            updateCategory()
+            updatePerson()
                 {
-                    if(this.validateCategory())
+                    if(this.validatePerson())
                         {
                         return;
                         }
                         let me=this;
-                        axios.put('/categoria/actualizar',{
-                            'name':this.name,
-                            'description':this.description,
-                            'id':this.category_id
+                        axios.put('/user/actualizar',{
+                                'name':this.name,
+                                'document_type':this.document_type,
+                                'document_num':this.document_num,
+                                'address':this.address,
+                                'phone':this.phone,
+                                'mail':this.mail,
+                                'id':this.Person_id,
+                                'user':this.user,
+                                'password':this.password,
+                                'rol_id':this.rol_id
+
                             }).then(function (response) {
                             me.closeModal();
-                            me.listCategory('1','','name');
+                            me.listPerson('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -300,44 +421,77 @@
                             });  
                     
                 },
-            validateCategory()
+
+
+
+
+
+
+            validatePerson()
                 {
-                    this.errorCategory=0;
-                    this.errorShowMsjCategory=[];
-                    if(!this.name) this.errorShowMsjCategory.push("El nombre de la categoria no puede estar vacio");
-                    if(this.errorShowMsjCategory.length) this.errorCategory=1;
-                    return this.errorCategory;
+                    this.errorPerson=0;
+                    this.errorShowMsjPerson=[];
+                    if(!this.name) this.errorShowMsjPerson.push("El nombre de la persona no puede estar vacio");
+                    if(!this.user) this.errorShowMsjPerson.push("El nombre de usuario no puede estar vacio");
+                    if(!this.password) this.errorShowMsjPerson.push("El password no puede estar vacio");
+                    if(this.rol_id==0) this.errorShowMsjPerson.push("Debes seleccionar un rol");
+
+                    if(this.errorShowMsjPerson.length) this.errorPerson=1;
+                    return this.errorPerson;
 
                 },
             openModal(model, action, data=[])
             {
+                this.selectRol();
                 switch(model)
                 {
-                case "category":
+                case "Person":
                     {
                         switch(action)
                         {
                             case 'register':
                                 {
-                                    this.errorCategory=0;
+                                    this.errorPerson=0;
                                     this.modal=1;
                                     this.name='';
-                                    this.titleModal='Registrar Categoria';
+                                    this.titleModal='Registrar Usuario';
+                                    this.user='';
+                                    this.password='';
+                                    this.rol_id=0;
                                     this.description='';
                                     this.typeAction=1;
+                                    this.document_type='DNI';
+                                    this.contactPhone='';
+                                    this.document_num='';
+                                    this.address='';
+                                    this.phone='';
+                                    this.mail='';
+                                    this.person_id;
+
                                     break;
 
 
                                 }
                             case 'update':
                                 {
-                                    this.errorCategory=0;
+                                    this.errorPerson=0;
                                     this.modal=1;
-                                    this.titleModal='Actualizar Categoria';
-                                    this.category_id=data['id'];
+                                    this.titleModal='Actualizar Usuario';
+                                    this.Person_id=data['id'];
                                     this.name=data['name'];
-                                    this.description=data['description'];
+                                    this.document_type=data['document_type'];
+                                    this.address=data['address'];
+                                    this.phone=data['phone'];
+                                    this.rol_id=data['rol_id'];
+                                    this.user=data['user'];
+                                    this.password=data['password']
                                     this.typeAction=2;
+                                    this.mail=data['mail'];
+                                    this.contactPhone=data['contact_phone'];
+                                    this.contact=data['contact'];
+                                    this.document_num=data['document_num'];
+
+
                                     break;
 
                                 }
@@ -352,15 +506,25 @@
             {
                 this.modal=0;
                 this.name='';
-                this.description='';
+                this.document_type='RUC';
+                this.document_num='';
+                this.address='';
                 this.titleModal='';
+                this.phone='';
+                this.mail='';
+                this.contact='';
+                this.contactPhone='';
+                this.errorPerson=0;
+                this.user='';
+                this.password='';
+                this.rol_id=0;
+                
                                    
 
             },
-            
-            
-        
-        disableCategory(id)
+
+
+               disableUser(id)
                 {
                     const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -389,7 +553,7 @@
                                 'Your file has been deleted.',
                                 'success'
                                 )
-                            me.listCategory('1','','name');
+                            me.listUser('1','','name');
                             })
                             .catch(function (error) {
                             console.log(error);
@@ -413,7 +577,7 @@
                     })
                 },
 
-                enableCategory(id)
+                enableUser(id)
                 {
                     const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -465,13 +629,18 @@
                     }
                     })
                 },
-            },
+
+        },
+   
+
+     
 
         mounted() {
-            this.listCategory(1, this.search, this.criteria);
+            this.listPerson(1, this.search, this.criteria);
         }
     
         }
+
         </script>
         <style>
         .mostrar

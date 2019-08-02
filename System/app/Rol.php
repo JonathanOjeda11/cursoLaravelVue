@@ -8,4 +8,10 @@ class Rol extends Model
 {
     protected $table = 'roles';
     protected $fillable = ['name','description','status'];
+
+    public function users()
+    {
+        return $this->hasMany('App\User');
+
+    }
 }

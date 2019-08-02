@@ -45,6 +45,19 @@ class SupplierController extends Controller
 
     }
 
+    public function selectSupplier(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $filter = $request->filter;
+        $suppliers = Supplier::join('people','supplier.id','=','people.id')
+        ->where('people.name', 'like', '%'.$filter.'%')
+        ->orWhere('people.document_num','like','%'.$filter.'%')
+        ->select('people.id','people.name','people.document_num')
+        ->orderBy('people.name', 'asc')->get();
+
+        return ['suppliers' => $suppliers];
+    }
+
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
@@ -56,6 +69,7 @@ class SupplierController extends Controller
             $person->save();
             $supplier = new Supplier();
             $supplier->fill($request->all());
+            $supplier->id = $person->id;
             $supplier->save();
 
             DB::commit();

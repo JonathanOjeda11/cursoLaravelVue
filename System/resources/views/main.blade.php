@@ -32,6 +32,12 @@
             <li class="nav-item px-3">
                 <a class="nav-link" href="#">Configuraciones</a>
             </li>
+            <li class="nav-item px-3">
+                 <a class="dropdown-item" href="{{route('logout')}}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-lock"></i> 
+                    Cerrar sesión
+                    </a>
+            </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item d-md-down-none">
@@ -56,22 +62,49 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="d-md-down-none">admin </span>
+                    <span class="d-md-down-none">{{Auth::user()->user}} </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header text-center">
                         <strong>Cuenta</strong>
                     </div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Perfil</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Cerrar sesión</a>
+                    <a class="dropdown-item" href="{{route('logout')}}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-lock"></i> 
+                    Cerrar sesión
+                    </a>
+
+                    <form id="logout-form" action="{{route('logout')}}" method="POST" style="display:none;">
+                        {{ csrf_field() }}
+                        
+
+                    </form>
+
                 </div>
+
+
             </li>
         </ul>
     </header>
 
     <div class="app-body">
+         
+        @if(Auth::check())
+            @if(Auth::user()->rol_id==1)
+               @include('template.sidebaradmin')
+            @elseif(Auth::user()->rol_id==2)
+                @include('template.sidebarvendedor')
+            @elseif(Auth::user()->rol_id==3)
+                @include('template.sidebaralmacenero')
+            @else
+
+            @endif
+
+
+
+        @endif
+
+
         
-        @include('template.sidebar')
         <!-- Contenido Principal -->
         @yield('content')
         <!-- /Fin del contenido principal -->
